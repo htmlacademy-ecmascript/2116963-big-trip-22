@@ -12,14 +12,14 @@ export default class Presenter {
   tripEventsContainer = document.querySelector('.trip-events');
   tripListComponent = new TripListView();
 
-  init() {
+  init(itemsCount) {
     render(new InfoView, this.headerMainContainer, RenderPosition.AFTERBEGIN);
     render(new FilterView, this.filterContainer);
     render(new SortView, this.tripEventsContainer);
     render(this.tripListComponent, this.tripEventsContainer);
     render(new TripEditView, this.tripListComponent.getElement());
 
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < itemsCount; i++) {
       render(new TripItemView, this.tripListComponent.getElement());
     }
   }
