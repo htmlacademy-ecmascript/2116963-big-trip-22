@@ -1,6 +1,6 @@
 import Presenter from './presenter/presenter';
+import PointsModel from './model/points-model';
 
-const TRIP_ITEMS_COUNT = 3;
-
-const presenter = new Presenter();
-presenter.init(TRIP_ITEMS_COUNT);
+const pointsModel = new PointsModel();
+const presenter = new Presenter({ pointsModel });
+presenter.init();

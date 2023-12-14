@@ -12,15 +12,20 @@ export default class Presenter {
   tripEventsContainer = document.querySelector('.trip-events');
   ListComponent = new ListView();
 
-  init(itemsCount) {
+  constructor({ pointsModel }) {
+    this.pointsModel = pointsModel;
+  }
+
+  init() {
+    this.points = [...this.pointsModel.getPoints()];
     render(new InfoView, this.headerMainContainer, RenderPosition.AFTERBEGIN);
     render(new FilterView, this.filterContainer);
     render(new SortView, this.tripEventsContainer);
     render(this.ListComponent, this.tripEventsContainer);
     render(new EditView, this.ListComponent.getElement());
 
-    for (let i = 0; i < itemsCount; i++) {
-      render(new PointView, this.ListComponent.getElement());
+    for (let i = 0; i < this.points.length; i++) {
+      render(new PointView({ point: this.points[i] }), this.ListComponent.getElement());
     }
   }
 }
