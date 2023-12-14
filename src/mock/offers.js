@@ -51,11 +51,16 @@ const mockOffers = [
         'id': 1,
         'title': 'Rent a car',
         'price': 200
+      },
+      {
+        'id': 2,
+        'title': 'Upgrade',
+        'price': 100
       }
     ]
   },
   {
-    'type': 'sightseeing ',
+    'type': 'sightseeing',
     'offers': [
       {
         'id': 1,

@@ -1,6 +1,6 @@
 import Presenter from './presenter/presenter';
-import PointsModel from './model/points-model';
+import Model from './model/model';
 
-const pointsModel = new PointsModel();
-const presenter = new Presenter({ pointsModel });
+const model = new Model();
+const presenter = new Presenter({ model });
 presenter.init();

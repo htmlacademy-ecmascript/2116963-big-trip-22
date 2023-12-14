@@ -12,20 +12,29 @@ export default class Presenter {
   tripEventsContainer = document.querySelector('.trip-events');
   ListComponent = new ListView();
 
-  constructor({ pointsModel }) {
-    this.pointsModel = pointsModel;
+  constructor({ model }) {
+    this.model = model;
   }
 
   init() {
-    this.points = [...this.pointsModel.getPoints()];
+    this.points = [...this.model.getPoints()];
+    this.offers = [...this.model.getOffers()];
+    this.destinations = [...this.model.getDestinations()];
+
     render(new InfoView, this.headerMainContainer, RenderPosition.AFTERBEGIN);
     render(new FilterView, this.filterContainer);
     render(new SortView, this.tripEventsContainer);
     render(this.ListComponent, this.tripEventsContainer);
-    render(new EditView, this.ListComponent.getElement());
 
-    for (let i = 0; i < this.points.length; i++) {
-      render(new PointView({ point: this.points[i] }), this.ListComponent.getElement());
+    const editPoint = this.points[0];
+    render(new EditView({ point: editPoint }), this.ListComponent.getElement());
+
+    for (let i = 1; i < this.points.length; i++) {
+      const point = this.points[i];
+      const pointOffers = [...this.offers.find((offer) => offer.type === this.points[i].type).offers];
+      const pointDestination = this.destinations.find((destination) => this.points[i].destination === destination.id);
+
+      render(new PointView({ point, pointOffers, pointDestination }), this.ListComponent.getElement());
     }
   }
 }
