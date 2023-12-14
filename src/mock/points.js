@@ -1,5 +1,3 @@
-import { getRandomArrayElement } from '../utils';
-
 const mockPoints = [
   {
     'basePrice': 100,
@@ -38,9 +36,5 @@ const mockPoints = [
     'type': 'drive'
   },
 ];
-
-function getRandomPoint() {
-  return getRandomArrayElement(mockPoints);
-}
 
 export { mockPoints };

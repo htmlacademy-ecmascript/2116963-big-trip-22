@@ -1,10 +1,5 @@
 import dayjs from 'dayjs';
 
-const DateFormats = {
-  DAY: 'MMM DD',
-  TIME: 'HH:mm'
-};
-
 const DIfferenceUnits = {
   MINUTE: 'minute',
 };
@@ -22,16 +17,9 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
 
-function capitalizeFirstLetter(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
-function formatDate(date) {
+function formatDate(date, template) {
   if (date) {
-    return {
-      day: dayjs(date).format(DateFormats.DAY),
-      time: dayjs(date).format(DateFormats.TIME)
-    };
+    return dayjs(date).format(template);
   }
 }
 
@@ -44,4 +32,4 @@ function getDifferenceTime(dateFrom, dateTo) {
   return {days, hours, minutes};
 }
 
-export { getRandomArrayElement, getRandomInt, capitalizeFirstLetter, formatDate, getDifferenceTime };
+export { getRandomArrayElement, getRandomInt, formatDate, getDifferenceTime };

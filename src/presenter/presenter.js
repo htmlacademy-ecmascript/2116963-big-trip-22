@@ -21,20 +21,21 @@ export default class Presenter {
     this.offers = [...this.model.getOffers()];
     this.destinations = [...this.model.getDestinations()];
 
-    render(new InfoView, this.headerMainContainer, RenderPosition.AFTERBEGIN);
+    render(new InfoView({ points: this.points, destinations: this.destinations }), this.headerMainContainer, RenderPosition.AFTERBEGIN);
     render(new FilterView, this.filterContainer);
     render(new SortView, this.tripEventsContainer);
     render(this.ListComponent, this.tripEventsContainer);
 
-    const editPoint = this.points[0];
-    render(new EditView({ point: editPoint }), this.ListComponent.getElement());
+    render(new EditView({ point: this.points[0] }), this.ListComponent.getElement());
 
     for (let i = 1; i < this.points.length; i++) {
-      const point = this.points[i];
-      const pointOffers = [...this.offers.find((offer) => offer.type === this.points[i].type).offers];
-      const pointDestination = this.destinations.find((destination) => this.points[i].destination === destination.id);
-
-      render(new PointView({ point, pointOffers, pointDestination }), this.ListComponent.getElement());
+      render(new PointView(
+        {
+          point: this.points[i],
+          offers: this.offers,
+          destinations: this.destinations
+        }
+      ), this.ListComponent.getElement());
     }
   }
 }
