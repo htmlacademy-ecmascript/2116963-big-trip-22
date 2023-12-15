@@ -1,17 +1,18 @@
-const TRAVEL_TYPES = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
-const DEFAULT_TYPE = 'flight';
-const DATE_DIVIDER = 'T';
-const TimeShorts = {
+export const TRAVEL_TYPES = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
+export const TimeShorts = {
   DAY: 'D',
   HOUR: 'H',
   MINUTE: 'M',
 };
-const DateFormats = {
+export const DateFormats = {
   DAY: 'DD',
   MONTH: 'MMM',
   MONTH_DAY: 'MMM DD',
   DAY_MONTH: 'DD MMM',
-  TIME: 'HH:mm'
+  TIME: 'HH:mm',
+  DAY_TIME: 'DD/MM/YY HH:mm'
 };
-
-export { TRAVEL_TYPES, DATE_DIVIDER, TimeShorts, DEFAULT_TYPE, DateFormats };
+export const ResetButtons = {
+  DELETE: 'Delete',
+  CANCEL: 'Cancel'
+};

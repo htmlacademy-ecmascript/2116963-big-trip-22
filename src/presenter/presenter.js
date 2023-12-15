@@ -1,5 +1,4 @@
-import { render, RenderPosition } from '../render';
-import InfoView from '../view/info-view';
+import { render } from '../render';
 import FilterView from '../view/filter-view';
 import SortView from '../view/sort-view';
 import ListView from '../view/list-view';
@@ -21,21 +20,21 @@ export default class Presenter {
     this.offers = [...this.model.getOffers()];
     this.destinations = [...this.model.getDestinations()];
 
-    render(new InfoView({ points: this.points, destinations: this.destinations }), this.headerMainContainer, RenderPosition.AFTERBEGIN);
     render(new FilterView, this.filterContainer);
     render(new SortView, this.tripEventsContainer);
     render(this.ListComponent, this.tripEventsContainer);
+    render(new EditView({
+      point: this.points[1],
+      offers: this.offers,
+      destinations: this.destinations
+    }), this.ListComponent.getElement());
 
-    render(new EditView({ point: this.points[0] }), this.ListComponent.getElement());
-
-    for (let i = 1; i < this.points.length; i++) {
-      render(new PointView(
-        {
-          point: this.points[i],
-          offers: this.offers,
-          destinations: this.destinations
-        }
-      ), this.ListComponent.getElement());
+    for (let i = 0; i < this.points.length; i++) {
+      render(new PointView({
+        point: this.points[i],
+        offers: this.offers,
+        destinations: this.destinations
+      }), this.ListComponent.getElement());
     }
   }
 }

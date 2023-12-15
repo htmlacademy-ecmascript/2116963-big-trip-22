@@ -1,6 +1,6 @@
 import { createElement } from '../render';
 import { formatDate, getDifferenceTime } from '../utils';
-import { DATE_DIVIDER, TimeShorts, DateFormats } from '../const';
+import { TimeShorts, DateFormats } from '../const';
 
 function createOffersTemplate(pointOffers, checkedOffers) {
   return pointOffers.filter((offer) => checkedOffers.includes(offer.id))
@@ -37,26 +37,21 @@ function createPointTemplate(point, offers, destinations) {
   const { basePrice, dateFrom, dateTo, destination, isFavorite, offers: checkedOffers, type } = point;
   const pointOffers = [...offers.find((offer) => offer.type === type).offers];
   const pointDestination = destinations.find((item) => destination === item.id);
-  const formattedDate = {
-    fromTime: formatDate(dateFrom, DateFormats.TIME),
-    toTime: formatDate(dateTo, DateFormats.TIME),
-    fromMonthDay: formatDate(dateFrom, DateFormats.MONTH_DAY)
-  };
   const activeClassName = isFavorite ? 'event__favorite-btn--active' : '';
 
   return (
     `<li class="trip-events__item">
       <div class="event">
-        <time class="event__date" datetime="${dateFrom.substring(0, dateFrom.indexOf(DATE_DIVIDER))}">${formattedDate.fromMonthDay}</time>
+        <time class="event__date" datetime="${dateFrom}">${formatDate(dateFrom, DateFormats.MONTH_DAY)}</time>
         <div class="event__type">
           <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
         </div>
         <h3 class="event__title">${type} ${pointDestination.name}</h3>
         <div class="event__schedule">
           <p class="event__time">
-            <time class="event__start-time" datetime="${dateFrom}">${formattedDate.fromTime}</time>
+            <time class="event__start-time" datetime="${dateFrom}">${formatDate(dateFrom, DateFormats.TIME)}</time>
             &mdash;
-            <time class="event__end-time" datetime="${dateTo}">${formattedDate.toTime}</time>
+            <time class="event__end-time" datetime="${dateTo}">${formatDate(dateTo, DateFormats.TIME)}</time>
           </p>
           <p class="event__duration">${createDifferenceTimeTemplate(dateFrom, dateTo)}</p>
         </div>

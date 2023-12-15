@@ -13,10 +13,6 @@ function getRandomArrayElement(items) {
   return items[Math.floor(Math.random() * items.length)];
 }
 
-function getRandomInt(max) {
-  return Math.floor(Math.random() * max);
-}
-
 function formatDate(date, template) {
   if (date) {
     return dayjs(date).format(template);
@@ -32,4 +28,4 @@ function getDifferenceTime(dateFrom, dateTo) {
   return {days, hours, minutes};
 }
 
-export { getRandomArrayElement, getRandomInt, formatDate, getDifferenceTime };
+export { getRandomArrayElement, formatDate, getDifferenceTime };
