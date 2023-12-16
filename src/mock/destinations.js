@@ -1,7 +1,7 @@
 const mockDestinations = [
   {
     'id': 1,
-    'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc orci nulla, elementum at suscipit ac, fringilla ac risus. Etiam diam quam, elementum nec ultricies cursus, scelerisque sed odio. Quisque posuere, nulla eu commodo tincidunt, leo nisl sagittis justo, non imperdiet justo diam at risus. Nulla porta lorem id sem molestie, sed rutrum arcu dapibus. Curabitur sed semper dui, in feugiat massa. Nam imperdiet tortor elit, ac rhoncus est consequat vel. Maecenas et eros eget justo efficitur elementum ac interdum ex. Quisque vitae tellus vel massa pellentesque mollis. Sed id pulvinar felis. Duis eu est in nulla posuere congue eu ut lorem. Donec ut orci hendrerit, congue leo nec, fringilla ipsum. Vestibulum massa mauris, dignissim sed ante vel, convallis consectetur ante. Curabitur dictum arcu nec tristique sagittis. Nullam mauris ipsum, faucibus eget augue ut, scelerisque pharetra magna. Vestibulum ut sagittis sem, vitae commodo nibh.',
+    'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ac purus urna. Aliquam eget pellentesque tortor. Etiam vel nulla vel neque sagittis luctus. Fusce bibendum, arcu vel interdum efficitur, quam orci ullamcorper eros, id viverra lacus mi et purus. Nunc euismod non ligula at volutpat. Cras vitae odio in est rutrum elementum vitae bibendum est. Nunc vitae convallis sapien. Nunc commodo varius dolor nec mollis.',
     'name': 'Chamonix',
     'pictures': [
       {

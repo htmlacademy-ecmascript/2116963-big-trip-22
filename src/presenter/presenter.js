@@ -23,13 +23,20 @@ export default class Presenter {
     render(new FilterView, this.filterContainer);
     render(new SortView, this.tripEventsContainer);
     render(this.ListComponent, this.tripEventsContainer);
+
     render(new EditView({
-      point: this.points[1],
+      point: {},
       offers: this.offers,
       destinations: this.destinations
     }), this.ListComponent.getElement());
 
-    for (let i = 0; i < this.points.length; i++) {
+    render(new EditView({
+      point: this.points[0],
+      offers: this.offers,
+      destinations: this.destinations
+    }), this.ListComponent.getElement());
+
+    for (let i = 1; i < this.points.length; i++) {
       render(new PointView({
         point: this.points[i],
         offers: this.offers,
