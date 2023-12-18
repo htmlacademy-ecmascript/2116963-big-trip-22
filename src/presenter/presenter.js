@@ -36,12 +36,12 @@ export default class Presenter {
       destinations: this.destinations
     }), this.ListComponent.getElement());
 
-    for (let i = 1; i < this.points.length; i++) {
+    this.points.forEach((point) => {
       render(new PointView({
-        point: this.points[i],
+        point: point,
         offers: this.offers,
         destinations: this.destinations
       }), this.ListComponent.getElement());
-    }
+    });
   }
 }

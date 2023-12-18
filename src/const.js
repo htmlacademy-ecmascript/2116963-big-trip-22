@@ -12,7 +12,7 @@ export const DateFormats = {
   TIME: 'HH:mm',
   DAY_TIME: 'DD/MM/YY HH:mm'
 };
-export const ResetButtons = {
+export const CancelButtonNames = {
   DELETE: 'Delete',
   CANCEL: 'Cancel'
 };

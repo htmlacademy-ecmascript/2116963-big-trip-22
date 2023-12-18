@@ -1,5 +1,5 @@
 import { createElement } from '../render';
-import { TRAVEL_TYPES, DateFormats, ResetButtons } from '../const';
+import { TRAVEL_TYPES, DateFormats, CancelButtonNames } from '../const';
 import { formatDate } from '../utils';
 
 function createTypeListTemplate(pointType, pointId) {
@@ -59,7 +59,7 @@ function createDestinationTemplate(pointDestination) {
 function createEditTemplate(point, offers, destinations) {
   const {
     id: pointId = 0,
-    basePrice,
+    basePrice = '',
     dateFrom = new Date(),
     dateTo = new Date(),
     destination = '',
@@ -111,11 +111,11 @@ function createEditTemplate(point, offers, destinations) {
               <span class="visually-hidden">Price</span>
               &euro;
             </label>
-            <input class="event__input  event__input--price" id="event-price-${pointId}" type="text" name="event-price" value="${basePrice || ''}">
+            <input class="event__input  event__input--price" id="event-price-${pointId}" type="text" name="event-price" value="${basePrice}">
           </div>
 
           <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-          <button class="event__reset-btn" type="reset">${pointId === 0 ? ResetButtons.CANCEL : ResetButtons.DELETE}</button>
+          <button class="event__reset-btn" type="reset">${pointId === 0 ? CancelButtonNames.CANCEL : CancelButtonNames.DELETE}</button>
           ${pointId !== 0 ? `<button class="event__rollup-btn" type="button">
             <span class="visually-hidden">Open event</span>
           </button>` : ''}
