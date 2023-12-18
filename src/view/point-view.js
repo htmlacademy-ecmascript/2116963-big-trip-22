@@ -1,6 +1,10 @@
 import { createElement } from '../render';
-import { formatDate, getDifferenceTime } from '../utils';
-import { TimeShorts, DateFormats } from '../const';
+import { formatDate } from '../utils';
+import { DateFormats } from '../const';
+import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
+
+dayjs.extend(duration);
 
 function createOffersTemplate(pointOffers, checkedOffers) {
   return pointOffers.filter((offer) => checkedOffers.includes(offer.id))
@@ -14,23 +18,13 @@ function createOffersTemplate(pointOffers, checkedOffers) {
     .join('');
 }
 
-function createTimeUnitTemplate(time, short) {
-  const addedZeroTime = time < 10 ? `0${time}` : time.toString();
-  return `${addedZeroTime + short} `;
-}
-
 function createDifferenceTimeTemplate(dateFrom, dateTo) {
-  const { days, hours, minutes } = getDifferenceTime(dateFrom, dateTo);
-  const daysTemplate = createTimeUnitTemplate(days, TimeShorts.DAY);
-  const hoursTemplate = createTimeUnitTemplate(hours, TimeShorts.HOUR);
-  const minutesTemplate = createTimeUnitTemplate(minutes, TimeShorts.MINUTE);
-  if (days > 0) {
-    return daysTemplate + hoursTemplate + minutesTemplate;
-  } else if (hours > 0) {
-    return hoursTemplate + minutesTemplate;
-  } else {
-    return minutesTemplate;
-  }
+  const difference = dayjs(dateTo).diff(dayjs(dateFrom));
+  const differenceDuration = dayjs.duration(difference);
+  const format = (differenceDuration.days() > 0 ? `${DateFormats.DAYS} ` : '')
+    + (differenceDuration.hours() > 0 ? `${DateFormats.HOURS} ` : '')
+    + DateFormats.MINUTES;
+  return differenceDuration.format(format);
 }
 
 function createPointTemplate(point, offers, destinations) {
