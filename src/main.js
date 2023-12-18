@@ -1,6 +1,10 @@
 import Presenter from './presenter/presenter';
+import Model from './model/model';
+import { mockPoints } from './mock/points';
+import { mockOffers } from './mock/offers';
+import { mockDestinations } from './mock/destinations';
 
-const TRIP_ITEMS_COUNT = 3;
-
-const presenter = new Presenter();
-presenter.init(TRIP_ITEMS_COUNT);
+const model = new Model();
+model.init(mockPoints, mockOffers, mockDestinations);
+const presenter = new Presenter({ model });
+presenter.init();
