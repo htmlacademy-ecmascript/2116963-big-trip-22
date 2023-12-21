@@ -1,6 +1,6 @@
-import { createElement } from '../render';
 import { TRAVEL_TYPES, DateFormats, CancelButtonNames } from '../const';
 import { formatDate } from '../utils';
+import AbstractView from '../framework/view/abstract-view';
 
 function createTypeListTemplate(pointType, pointId) {
   return TRAVEL_TYPES.map((type) => {
@@ -129,26 +129,19 @@ function createEditTemplate(point, offers, destinations) {
   );
 }
 
-export default class EditView {
+export default class EditView extends AbstractView {
+  #point = [];
+  #offers = [];
+  #destinations = [];
+
   constructor({ point, offers, destinations }) {
-    this.point = point;
-    this.offers = offers;
-    this.destinations = destinations;
+    super();
+    this.#point = point;
+    this.#offers = offers;
+    this.#destinations = destinations;
   }
 
-  getTemplate() {
-    return createEditTemplate(this.point, this.offers, this.destinations);
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
+  get template() {
+    return createEditTemplate(this.#point, this.#offers, this.#destinations);
   }
 }
