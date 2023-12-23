@@ -10,4 +10,16 @@ function formatDate(date, template) {
   }
 }
 
-export { getRandomArrayElement, formatDate };
+function isFuture(dateFrom) {
+  return dayjs().isBefore(dayjs(dateFrom));
+}
+
+function isPast(dateTo) {
+  return dayjs().isAfter(dayjs(dateTo));
+}
+
+function isPresent(dateFrom, dateTo) {
+  return dayjs().isAfter(dayjs(dateFrom)) && dayjs().isBefore(dayjs(dateTo));
+}
+
+export { getRandomArrayElement, formatDate, isFuture, isPast, isPresent };

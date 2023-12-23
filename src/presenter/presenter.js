@@ -6,6 +6,7 @@ import PointView from '../view/point-view';
 import EditView from '../view/edit-view';
 import { replace } from '../framework/render';
 import EmptyView from '../view/empty-view';
+import { generateFilter } from '../mock/filter';
 
 export default class Presenter {
   #filterContainer = document.querySelector('.trip-controls__filters');
@@ -15,6 +16,7 @@ export default class Presenter {
   #points = [];
   #offers = [];
   #destinations = [];
+  #filters = null;
 
   constructor({ model }) {
     this.#model = model;
@@ -24,8 +26,9 @@ export default class Presenter {
     this.#points = [...this.#model.points];
     this.#offers = [...this.#model.offers];
     this.#destinations = [...this.#model.destinations];
+    this.#filters = generateFilter(this.#points);
 
-    render(new FilterView, this.#filterContainer);
+    render(new FilterView({filters: this.#filters}), this.#filterContainer);
     render(new SortView, this.#tripEventsContainer);
     this.#renderBoard();
   }

@@ -14,3 +14,9 @@ export const CancelButtonNames = {
   DELETE: 'Delete',
   CANCEL: 'Cancel'
 };
+export const FilterType = {
+  EVERYTHING: 'everything',
+  FUTURE: 'future',
+  PRESENT: 'present',
+  PAST: 'past',
+};

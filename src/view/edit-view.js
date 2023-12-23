@@ -14,7 +14,7 @@ function createTypeListTemplate(pointType, pointId) {
   }).join('');
 }
 
-function createOffersListTemplate(pointId, pointOffers, checkedOffers) {
+function createOffersListTemplate(pointOffers, checkedOffers) {
   return pointOffers.map((offer) => {
     const checked = checkedOffers.includes(offer.id) ? 'checked' : '';
     return (
@@ -30,13 +30,13 @@ function createOffersListTemplate(pointId, pointOffers, checkedOffers) {
   }).join('');
 }
 
-function createOffersSectionTemplate(pointId, pointOffers, checkedOffers) {
+function createOffersSectionTemplate(pointOffers, checkedOffers) {
   return (
     `<section class="event__section  event__section--offers">
       <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
       <div class="event__available-offers">
-        ${createOffersListTemplate(pointId, pointOffers, checkedOffers)}
+        ${createOffersListTemplate(pointOffers, checkedOffers)}
       </div>
     </section>`
   );
@@ -121,7 +121,7 @@ function createEditTemplate(point, offers, destinations) {
           </button>` : ''}
         </header>
         <section class="event__details">
-          ${pointOffers.length ? createOffersSectionTemplate(pointId, pointOffers, checkedOffers) : ''}
+          ${pointOffers.length ? createOffersSectionTemplate(pointOffers, checkedOffers) : ''}
           ${pointDestination ? createDestinationTemplate(pointDestination) : ''}
         </section>
       </form>
