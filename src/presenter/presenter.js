@@ -5,6 +5,7 @@ import ListView from '../view/list-view';
 import PointView from '../view/point-view';
 import EditView from '../view/edit-view';
 import { replace } from '../framework/render';
+import EmptyView from '../view/empty-view';
 
 export default class Presenter {
   #filterContainer = document.querySelector('.trip-controls__filters');
@@ -26,11 +27,7 @@ export default class Presenter {
 
     render(new FilterView, this.#filterContainer);
     render(new SortView, this.#tripEventsContainer);
-    render(this.#ListComponent, this.#tripEventsContainer);
-
-    this.#points.forEach((point) => {
-      this.#renderPoint(point);
-    });
+    this.#renderBoard();
   }
 
   #renderPoint(point) {
@@ -75,5 +72,18 @@ export default class Presenter {
     }
 
     render(pointComponent, this.#ListComponent.element);
+  }
+
+  #renderBoard() {
+    if (!this.#points.length) {
+      render(new EmptyView(), this.#tripEventsContainer);
+      return;
+    }
+
+    render(this.#ListComponent, this.#tripEventsContainer);
+
+    this.#points.forEach((point) => {
+      this.#renderPoint(point);
+    });
   }
 }

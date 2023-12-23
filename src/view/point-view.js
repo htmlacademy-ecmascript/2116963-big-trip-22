@@ -1,4 +1,4 @@
-import { formatDate } from '../utils';
+import { formatDate } from '../utils/utils';
 import { DateFormats } from '../const';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';

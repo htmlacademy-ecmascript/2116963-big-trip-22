@@ -1,5 +1,5 @@
 import { TRAVEL_TYPES, DateFormats, CancelButtonNames } from '../const';
-import { formatDate } from '../utils';
+import { formatDate } from '../utils/utils';
 import AbstractView from '../framework/view/abstract-view';
 
 function createTypeListTemplate(pointType, pointId) {
@@ -19,8 +19,8 @@ function createOffersListTemplate(pointId, pointOffers, checkedOffers) {
     const checked = checkedOffers.includes(offer.id) ? 'checked' : '';
     return (
       `<div class="event__offer-selector">
-        <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-${pointId}" type="checkbox" name="event-offer-luggage" ${checked}>
-        <label class="event__offer-label" for="event-offer-luggage-${pointId}">
+        <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-${offer.id}" type="checkbox" name="event-offer-luggage" ${checked}>
+        <label class="event__offer-label" for="event-offer-luggage-${offer.id}">
           <span class="event__offer-title">${offer.title}</span>
           &plus;&euro;&nbsp;
           <span class="event__offer-price">${offer.price}</span>
