@@ -1,10 +1,6 @@
-import { formatDate } from '../utils/utils';
+import { formatDate, getDatesDifference, getDatesDuration } from '../utils/utils';
 import { DateFormats } from '../const';
-import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
 import AbstractView from '../framework/view/abstract-view';
-
-dayjs.extend(duration);
 
 function createOffersTemplate(pointOffers, checkedOffers) {
   return pointOffers.filter((offer) => checkedOffers.includes(offer.id))
@@ -19,8 +15,8 @@ function createOffersTemplate(pointOffers, checkedOffers) {
 }
 
 function createDifferenceTimeTemplate(dateFrom, dateTo) {
-  const difference = dayjs(dateTo).diff(dayjs(dateFrom));
-  const differenceDuration = dayjs.duration(difference);
+  const difference = getDatesDifference(dateFrom, dateTo);
+  const differenceDuration = getDatesDuration(difference);
   const format = (differenceDuration.days() > 0 ? `${DateFormats.DAYS} ` : '')
     + (differenceDuration.hours() > 0 ? `${DateFormats.HOURS} ` : '')
     + DateFormats.MINUTES;
