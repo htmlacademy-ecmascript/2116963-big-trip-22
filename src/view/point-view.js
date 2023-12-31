@@ -1,6 +1,6 @@
-import { createElement } from '../render';
-import { formatDate, getDifferenceTime } from '../utils';
-import { TimeShorts, DateFormats } from '../const';
+import { formatDate, getDatesDifference, getDatesDuration } from '../utils/utils';
+import { DateFormats } from '../const';
+import AbstractView from '../framework/view/abstract-view';
 
 function createOffersTemplate(pointOffers, checkedOffers) {
   return pointOffers.filter((offer) => checkedOffers.includes(offer.id))
@@ -14,23 +14,13 @@ function createOffersTemplate(pointOffers, checkedOffers) {
     .join('');
 }
 
-function createTimeUnitTemplate(time, short) {
-  const addedZeroTime = time < 10 ? `0${time}` : time.toString();
-  return `${addedZeroTime + short} `;
-}
-
 function createDifferenceTimeTemplate(dateFrom, dateTo) {
-  const { days, hours, minutes } = getDifferenceTime(dateFrom, dateTo);
-  const daysTemplate = createTimeUnitTemplate(days, TimeShorts.DAY);
-  const hoursTemplate = createTimeUnitTemplate(hours, TimeShorts.HOUR);
-  const minutesTemplate = createTimeUnitTemplate(minutes, TimeShorts.MINUTE);
-  if (days > 0) {
-    return daysTemplate + hoursTemplate + minutesTemplate;
-  } else if (hours > 0) {
-    return hoursTemplate + minutesTemplate;
-  } else {
-    return minutesTemplate;
-  }
+  const difference = getDatesDifference(dateFrom, dateTo);
+  const differenceDuration = getDatesDuration(difference);
+  const format = (differenceDuration.days() > 0 ? `${DateFormats.DAYS} ` : '')
+    + (differenceDuration.hours() > 0 ? `${DateFormats.HOURS} ` : '')
+    + DateFormats.MINUTES;
+  return differenceDuration.format(format);
 }
 
 function createPointTemplate(point, offers, destinations) {
@@ -76,26 +66,27 @@ function createPointTemplate(point, offers, destinations) {
   );
 }
 
-export default class PointView {
-  constructor({ point, offers, destinations }) {
-    this.point = point;
-    this.offers = offers;
-    this.destinations = destinations;
+export default class PointView extends AbstractView {
+  #point = [];
+  #offers = [];
+  #destinations = [];
+  #handleArrowClick = null;
+
+  constructor({ point, offers, destinations, onArrowClick }) {
+    super();
+    this.#point = point;
+    this.#offers = offers;
+    this.#destinations = destinations;
+    this.#handleArrowClick = onArrowClick;
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#clickArrowHandler);
   }
 
-  getTemplate() {
-    return createPointTemplate(this.point, this.offers, this.destinations);
+  get template() {
+    return createPointTemplate(this.#point, this.#offers, this.#destinations);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
-  }
+  #clickArrowHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleArrowClick();
+  };
 }

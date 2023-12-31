@@ -1,6 +1,6 @@
-import { createElement } from '../render';
 import { TRAVEL_TYPES, DateFormats, CancelButtonNames } from '../const';
-import { formatDate } from '../utils';
+import { formatDate } from '../utils/utils';
+import AbstractView from '../framework/view/abstract-view';
 
 function createTypeListTemplate(pointType, pointId) {
   return TRAVEL_TYPES.map((type) => {
@@ -14,13 +14,13 @@ function createTypeListTemplate(pointType, pointId) {
   }).join('');
 }
 
-function createOffersListTemplate(pointId, pointOffers, checkedOffers) {
+function createOffersListTemplate(pointOffers, checkedOffers) {
   return pointOffers.map((offer) => {
     const checked = checkedOffers.includes(offer.id) ? 'checked' : '';
     return (
       `<div class="event__offer-selector">
-        <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-${pointId}" type="checkbox" name="event-offer-luggage" ${checked}>
-        <label class="event__offer-label" for="event-offer-luggage-${pointId}">
+        <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-${offer.id}" type="checkbox" name="event-offer-luggage" ${checked}>
+        <label class="event__offer-label" for="event-offer-luggage-${offer.id}">
           <span class="event__offer-title">${offer.title}</span>
           &plus;&euro;&nbsp;
           <span class="event__offer-price">${offer.price}</span>
@@ -30,13 +30,13 @@ function createOffersListTemplate(pointId, pointOffers, checkedOffers) {
   }).join('');
 }
 
-function createOffersSectionTemplate(pointId, pointOffers, checkedOffers) {
+function createOffersSectionTemplate(pointOffers, checkedOffers) {
   return (
     `<section class="event__section  event__section--offers">
       <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
       <div class="event__available-offers">
-        ${createOffersListTemplate(pointId, pointOffers, checkedOffers)}
+        ${createOffersListTemplate(pointOffers, checkedOffers)}
       </div>
     </section>`
   );
@@ -121,7 +121,7 @@ function createEditTemplate(point, offers, destinations) {
           </button>` : ''}
         </header>
         <section class="event__details">
-          ${pointOffers.length ? createOffersSectionTemplate(pointId, pointOffers, checkedOffers) : ''}
+          ${pointOffers.length ? createOffersSectionTemplate(pointOffers, checkedOffers) : ''}
           ${pointDestination ? createDestinationTemplate(pointDestination) : ''}
         </section>
       </form>
@@ -129,26 +129,35 @@ function createEditTemplate(point, offers, destinations) {
   );
 }
 
-export default class EditView {
-  constructor({ point, offers, destinations }) {
-    this.point = point;
-    this.offers = offers;
-    this.destinations = destinations;
+export default class EditView extends AbstractView {
+  #point = [];
+  #offers = [];
+  #destinations = [];
+  #handleArrowClick = null;
+  #handleFormSubmit = null;
+
+  constructor({ point, offers, destinations, onArrowClick, onFormSubmit }) {
+    super();
+    this.#point = point;
+    this.#offers = offers;
+    this.#destinations = destinations;
+    this.#handleArrowClick = onArrowClick;
+    this.#handleFormSubmit = onFormSubmit;
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#arrowClickHandler);
+    this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
   }
 
-  getTemplate() {
-    return createEditTemplate(this.point, this.offers, this.destinations);
+  get template() {
+    return createEditTemplate(this.#point, this.#offers, this.#destinations);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
+  #arrowClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleArrowClick();
+  };
 
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
-  }
+  #formSubmitHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleFormSubmit();
+  };
 }
