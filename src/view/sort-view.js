@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view';
-import { DisabledSortTypes } from '../const';
+import { DISABLED_SORT_TYPES } from '../const';
 
 function createSortItemTemplate(sortItem, isChecked) {
   const {type} = sortItem;
@@ -12,7 +12,7 @@ function createSortItemTemplate(sortItem, isChecked) {
         type="radio" name="trip-sort"
         value="sort-${type}"
         ${isChecked ? 'checked' : ''}
-        ${DisabledSortTypes.includes(type) ? 'disabled' : ''}>
+        ${DISABLED_SORT_TYPES.includes(type) ? 'disabled' : ''}>
       <label class="trip-sort__btn" for="sort-${type}">${type}</label>
     </div>`
   );

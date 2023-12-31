@@ -27,4 +27,4 @@ export const SortType = {
   PRICE: 'price',
   OFFER: 'offer',
 };
-export const DisabledSortTypes = ['event', 'offer'];
+export const DISABLED_SORT_TYPES = ['event', 'offer'];
