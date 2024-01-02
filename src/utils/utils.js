@@ -3,33 +3,35 @@ import duration from 'dayjs/plugin/duration';
 
 dayjs.extend(duration);
 
-function getRandomArrayElement(items) {
+export function getRandomArrayElement(items) {
   return items[Math.floor(Math.random() * items.length)];
 }
 
-function formatDate(date, template) {
+export function formatDate(date, template) {
   if (date) {
     return dayjs(date).format(template);
   }
 }
-function getDatesDifference(dateFrom, dateTo) {
+export function getDatesDifference(dateFrom, dateTo) {
   return dayjs(dateTo).diff(dayjs(dateFrom));
 }
 
-function getDatesDuration(difference) {
+export function getDatesDuration(difference) {
   return dayjs.duration(difference);
 }
 
-function isFuture(dateFrom) {
+export function isFuture(dateFrom) {
   return dayjs().isBefore(dayjs(dateFrom));
 }
 
-function isPast(dateTo) {
+export function isPast(dateTo) {
   return dayjs().isAfter(dayjs(dateTo));
 }
 
-function isPresent(dateFrom, dateTo) {
+export function isPresent(dateFrom, dateTo) {
   return dayjs().isAfter(dayjs(dateFrom)) && dayjs().isBefore(dayjs(dateTo));
 }
 
-export { getRandomArrayElement, formatDate, getDatesDifference, getDatesDuration, isFuture, isPast, isPresent };
+export function updateItem(items, update) {
+  return items.map((item) => item.id === update.id ? update : item);
+}

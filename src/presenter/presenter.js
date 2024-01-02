@@ -5,6 +5,7 @@ import ListView from '../view/list-view';
 import EmptyView from '../view/empty-view';
 import { generateFilter } from '../mock/filter';
 import PointPresenter from './point-presenter';
+import { updateItem } from '../utils/utils';
 
 export default class Presenter {
   #filterContainer = document.querySelector('.trip-controls__filters');
@@ -15,6 +16,7 @@ export default class Presenter {
   #offers = [];
   #destinations = [];
   #filters = [];
+  #pointPresenters = new Map();
 
   constructor({ model }) {
     this.#model = model;
@@ -32,8 +34,12 @@ export default class Presenter {
   }
 
   #renderPoint(point, offers, destinations) {
-    const pointPresenter = new PointPresenter({listComponent: this.#listComponent});
+    const pointPresenter = new PointPresenter({
+      listComponent: this.#listComponent,
+      handlePointChange: this.#handlePointChange
+    });
     pointPresenter.init(point, offers, destinations);
+    this.#pointPresenters.set(point.id, pointPresenter);
   }
 
   #renderBoard() {
@@ -46,4 +52,14 @@ export default class Presenter {
       render(new EmptyView(), this.#tripEventsContainer);
     }
   }
+
+  #clearList() {
+    this.#pointPresenters.forEach((presenter) => presenter.destroy());
+    this.#pointPresenters.clear();
+  }
+
+  #handlePointChange = (updatedPoint) => {
+    this.#points = updateItem(this.#points, updatedPoint);
+    this.#pointPresenters.get(updatedPoint.id).init(updatedPoint, this.#offers, this.#destinations);
+  };
 }
