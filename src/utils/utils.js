@@ -35,3 +35,11 @@ export function isPresent(dateFrom, dateTo) {
 export function updateItem(items, update) {
   return items.map((item) => item.id === update.id ? update : item);
 }
+
+export function sortPointsTime(pointA, pointB) {
+  return getDatesDifference(pointB.dateFrom, pointB.dateTo) - getDatesDifference(pointA.dateFrom, pointA.dateTo);
+}
+
+export function sortPointsPrice(pointA, pointB) {
+  return pointB['basePrice'] - pointA['basePrice'];
+}
