@@ -34,14 +34,14 @@ export default class SortView extends AbstractView {
     super();
     this.#handleSortTypeChange = handleSortTypeChange;
 
-    this.element.addEventListener('click', this.#sortTypeChangeHandler);
+    this.element.addEventListener('click', this.#onSortClick);
   }
 
   get template() {
     return createSortTemplate();
   }
 
-  #sortTypeChangeHandler = (evt) => {
+  #onSortClick = (evt) => {
     if (!evt.target.classList.contains('event')) {
       return;
     }

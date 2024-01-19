@@ -36,22 +36,22 @@ export default class PointPresenter {
       point: this.#point,
       offers: this.#offers,
       destinations: this.#destinations,
-      onArrowClick: () => {
+      handleArrowClick: () => {
         this.#replacePointToForm();
-        document.addEventListener('keydown', this.#escKeyDownHandler);
+        document.addEventListener('keydown', this.#onEscKeyDown);
       },
-      onFavoriteClick: this.#handleFavoriteClick
+      handleFavoriteClick: this.#handleFavoriteClick
     });
 
     this.#editComponent = new EditView({
       point: this.#point,
       offers: this.#offers,
       destinations: this.#destinations,
-      onArrowClick: () => {
+      handleArrowClick: () => {
         this.#replaceFormToPoint();
-        document.addEventListener('keydown', this.#escKeyDownHandler);
+        document.addEventListener('keydown', this.#onEscKeyDown);
       },
-      onFormSubmit: this.#handleFormSubmit
+      handleFormSubmit: this.#handleFormSubmit
     });
 
     if (prevPointComponent === null || prevEditComponent === null) {
@@ -91,11 +91,11 @@ export default class PointPresenter {
     this.#mode = Mode.DEFAULT;
   }
 
-  #escKeyDownHandler = (evt) => {
+  #onEscKeyDown = (evt) => {
     if (evt.key === 'Escape') {
       evt.preventDefault();
       this.#replaceFormToPoint();
-      document.removeEventListener('keydown', this.#escKeyDownHandler);
+      document.removeEventListener('keydown', this.#onEscKeyDown);
     }
   };
 
@@ -106,6 +106,6 @@ export default class PointPresenter {
   #handleFormSubmit = (point) => {
     this.#handlePointChange(point);
     this.#replaceFormToPoint();
-    document.removeEventListener('keydown', this.#escKeyDownHandler);
+    document.removeEventListener('keydown', this.#onEscKeyDown);
   };
 }
