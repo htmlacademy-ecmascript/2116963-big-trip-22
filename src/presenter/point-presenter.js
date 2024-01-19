@@ -81,14 +81,14 @@ export default class PointPresenter {
   }
 
   #replacePointToForm() {
-    replace(this.#editComponent, this.#pointComponent);
     this.#handleModeChange();
     this.#mode = Mode.EDITING;
+    replace(this.#editComponent, this.#pointComponent);
   }
 
   #replaceFormToPoint() {
-    replace(this.#pointComponent, this.#editComponent);
     this.#mode = Mode.DEFAULT;
+    replace(this.#pointComponent, this.#editComponent);
   }
 
   #onEscKeyDown = (evt) => {

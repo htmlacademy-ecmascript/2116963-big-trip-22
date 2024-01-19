@@ -1,13 +1,14 @@
 import { TRAVEL_TYPES, DateFormats, CancelButtonNames } from '../const';
 import { formatDate } from '../utils/utils';
-import AbstractView from '../framework/view/abstract-view';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view';
+
 
 function createTypeListTemplate(pointType, pointId) {
   return TRAVEL_TYPES.map((type) => {
     const checked = type === pointType ? 'checked' : '';
     return (
       `<div class="event__type-item">
-         <input id="event-type-${type}-${pointId}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}" ${checked}>
+         <input id="event-type-${type}-${pointId}" class="event__type-input  visually-hidden event" type="radio" name="event-type" value="${type}" ${checked}>
          <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-${pointId}">${type}</label>
        </div>`
     );
@@ -129,8 +130,7 @@ function createEditTemplate(point, offers, destinations) {
   );
 }
 
-export default class EditView extends AbstractView {
-  #point = [];
+export default class EditView extends AbstractStatefulView {
   #offers = [];
   #destinations = [];
   #handleArrowClick = null;
@@ -138,17 +138,22 @@ export default class EditView extends AbstractView {
 
   constructor({ point, offers, destinations, handleArrowClick, handleFormSubmit }) {
     super();
-    this.#point = point;
+    this._setState(EditView.parsePointToState(point));
     this.#offers = offers;
     this.#destinations = destinations;
     this.#handleArrowClick = handleArrowClick;
     this.#handleFormSubmit = handleFormSubmit;
-    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#onArrowClick);
-    this.element.querySelector('form').addEventListener('submit', this.#onFormSubmit);
+    this._restoreHandlers();
   }
 
   get template() {
-    return createEditTemplate(this.#point, this.#offers, this.#destinations);
+    return createEditTemplate(this._state, this.#offers, this.#destinations);
+  }
+
+  _restoreHandlers() {
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#onArrowClick);
+    this.element.querySelector('form').addEventListener('submit', this.#onFormSubmit);
+    this.element.querySelector('.event__type-group').addEventListener('click', this.#onTripTypeClick);
   }
 
   #onArrowClick = (evt) => {
@@ -158,6 +163,20 @@ export default class EditView extends AbstractView {
 
   #onFormSubmit = (evt) => {
     evt.preventDefault();
-    this.#handleFormSubmit(this.#point);
+    this.#handleFormSubmit(EditView.parseStateToPoint(this._state));
   };
+
+  #onTripTypeClick = (evt) => {
+    if (evt.target.classList.contains('event')) {
+      this.updateElement({type: evt.target.value});
+    }
+  };
+
+  static parsePointToState(point) {
+    return {...point};
+  }
+
+  static parseStateToPoint(state) {
+    return {...state};
+  }
 }

@@ -9,7 +9,7 @@ import { updateItem } from '../utils/utils';
 import { SortType } from '../const';
 import { sortPointsTime, sortPointsPrice } from '../utils/utils';
 
-export default class Presenter {
+export default class MainPresenter {
   #filterContainer = document.querySelector('.trip-controls__filters');
   #tripEventsContainer = document.querySelector('.trip-events');
   #listComponent = new ListView();

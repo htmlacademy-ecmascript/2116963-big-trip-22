@@ -42,10 +42,8 @@ export default class SortView extends AbstractView {
   }
 
   #onSortClick = (evt) => {
-    if (!evt.target.classList.contains('event')) {
-      return;
+    if (evt.target.classList.contains('event')) {
+      this.#handleSortTypeChange(evt.target.dataset.type);
     }
-
-    this.#handleSortTypeChange(evt.target.dataset.type);
   };
 }
