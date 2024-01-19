@@ -6,9 +6,10 @@ function createSortItemTemplate(type, isChecked) {
     `<div class="trip-sort__item  trip-sort__item--${type}">
       <input
         id="sort-${type}"
-        class="trip-sort__input  visually-hidden"
+        class="trip-sort__input  visually-hidden event"
         type="radio" name="trip-sort"
         value="sort-${type}"
+        data-type="${type}"
         ${isChecked ? 'checked' : ''}
         ${DISABLED_SORT_TYPES.includes(type) ? 'disabled' : ''}>
       <label class="trip-sort__btn" for="sort-${type}">${type}</label>
@@ -41,11 +42,10 @@ export default class SortView extends AbstractView {
   }
 
   #sortTypeChangeHandler = (evt) => {
-    if (evt.target.tagName !== 'INPUT') {
+    if (!evt.target.classList.contains('event')) {
       return;
     }
 
-    // evt.preventDefault();
-    this.#handleSortTypeChange(evt.target.id.split('-')[1]);
+    this.#handleSortTypeChange(evt.target.dataset.type);
   };
 }
