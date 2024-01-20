@@ -6,7 +6,7 @@ function createSortItemTemplate(type, isChecked) {
     `<div class="trip-sort__item  trip-sort__item--${type}">
       <input
         id="sort-${type}"
-        class="trip-sort__input  visually-hidden event"
+        class="trip-sort__input  visually-hidden"
         type="radio" name="trip-sort"
         value="sort-${type}"
         data-type="${type}"
@@ -42,7 +42,7 @@ export default class SortView extends AbstractView {
   }
 
   #onSortClick = (evt) => {
-    if (evt.target.classList.contains('event')) {
+    if (evt.target.classList.contains('trip-sort__input')) {
       this.#handleSortTypeChange(evt.target.dataset.type);
     }
   };

@@ -33,14 +33,9 @@ const mockDestinations = [
   },
   {
     'id': 4,
-    'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tristique risus et malesuada eleifend. Vivamus quam felis, aliquet placerat nunc vitae, feugiat fermentum enim. Donec ultrices, neque commodo molestie feugiat, orci felis faucibus erat, vel finibus orci libero vitae velit. Nullam quis convallis velit, nec convallis ligula. Vivamus dui turpis, pulvinar nec elementum quis, eleifend et ligula. Duis condimentum justo in porttitor pulvinar. Quisque quis ex tortor. Proin sed facilisis turpis. Aenean ultricies ligula eget felis eleifend tempus. Quisque finibus arcu vel tellus placerat, eu convallis est commodo. Nulla molestie interdum viverra.',
+    'description': '',
     'name': 'Moscow',
-    'pictures': [
-      {
-        'src': 'https://loremflickr.com/248/152?random=1',
-        'description': 'Lorem ipsum'
-      }
-    ]
+    'pictures': []
   }
 ];
 
