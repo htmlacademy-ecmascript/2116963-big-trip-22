@@ -20,7 +20,11 @@ function createOffersListTemplate(pointOffers, checkedOffers) {
     const checked = checkedOffers.includes(offer.id) ? 'checked' : '';
     return (
       `<div class="event__offer-selector">
-        <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-${offer.id}" type="checkbox" name="event-offer-luggage" ${checked}>
+        <input class="event__offer-checkbox visually-hidden"
+          id="event-offer-luggage-${offer.id}"
+          data-offer-id=${offer.id}
+          type="checkbox" name="event-offer-luggage"
+          ${checked}>
         <label class="event__offer-label" for="event-offer-luggage-${offer.id}">
           <span class="event__offer-title">${offer.title}</span>
           &plus;&euro;&nbsp;
@@ -45,7 +49,7 @@ function createOffersSectionTemplate(pointOffers, checkedOffers) {
 
 function createDestinationTemplate(pointDestination) {
   return (
-    pointDestination.description && pointDestination.pictures.length ? `<section class="event__section  event__section--destination">
+    pointDestination.description || pointDestination.pictures.length ? `<section class="event__section  event__section--destination">
       <h3 class="event__section-title  event__section-title--destination">Destination</h3>
       ${pointDestination.description ? `<p class="event__destination-description">${pointDestination.description}</p>` : ''}
       ${pointDestination.pictures.length ? `<div class="event__photos-container">
@@ -167,6 +171,7 @@ export default class EditView extends AbstractStatefulView {
     this.element.querySelector('.event__type-group').addEventListener('click', this.#onTripTypeClick);
     this.element.querySelector('.event__input--destination').addEventListener('input', this.#onDestinationInput);
     this.element.querySelector('.event__input--price').addEventListener('input', this.#onPriceInput);
+    this.element.querySelector('.event__available-offers').addEventListener('click', this.#onOffersClick);
   }
 
   #onArrowClick = (evt) => {
@@ -181,7 +186,7 @@ export default class EditView extends AbstractStatefulView {
 
   #onTripTypeClick = (evt) => {
     if (evt.target.classList.contains('event__type-input')) {
-      this.updateElement({ type: evt.target.value });
+      this.updateElement({ type: evt.target.value, offers: [] });
     }
   };
 
@@ -190,12 +195,26 @@ export default class EditView extends AbstractStatefulView {
     this.updateElement({
       destination: destination ? destination.id : '',
     });
+    this.element.querySelectorAll('.event__offer-checkbox').forEach((element) => {
+      if (this._state.offers.includes(element.dataset.offerId)) {
+        element.checked = true;
+      }
+    });
   };
 
   #onPriceInput = (evt) => {
     this._setState({
       basePrice: evt.currentTarget.value,
     });
+  };
+
+  #onOffersClick = (evt) => {
+    if (evt.target.classList.contains('event__offer-checkbox')) {
+      const items = [...this.element.querySelectorAll('.event__offer-checkbox:checked')];
+      this._setState({
+        offers: items.map((item) => item.dataset.offerId)
+      });
+    }
   };
 
   static parsePointToState(point) {
