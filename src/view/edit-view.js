@@ -286,11 +286,11 @@ export default class EditView extends AbstractStatefulView {
   }
 
   static parsePointToState(point) {
-    return {...point};
+    return { ...point };
   }
 
   static parseStateToPoint(state) {
-    const point = {...state};
+    const point = { ...state };
     point.dateFrom = formatDate(state.dateFrom, DateFormats.BASIC);
     point.dateTo = formatDate(state.dateTo, DateFormats.BASIC);
     return point;
