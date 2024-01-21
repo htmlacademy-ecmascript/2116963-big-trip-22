@@ -253,7 +253,7 @@ export default class EditView extends AbstractStatefulView {
 
   #setDatepicker() {
     const commonConfig = {
-      dateFormat: DateFormats.DATEPICKER, //DateFormats.DATEPICKER
+      dateFormat: DateFormats.DATEPICKER,
       enableTime: true,
       'time_24hr': true,
       locale: {
@@ -263,9 +263,10 @@ export default class EditView extends AbstractStatefulView {
     };
     const formattedDateFrom = formatDate(this._state.dateFrom, DateFormats.DAY_TIME);
     const formattedDateTo = formatDate(this._state.dateTo, DateFormats.DAY_TIME);
+    const [dateFromElement, dateToElement] = this.element.querySelectorAll('.event__input--time');
 
     this.#datepickerFrom = flatpickr(
-      this.element.querySelector('.event__input--time[name="event-start-time"]'),
+      dateFromElement,
       {
         ...commonConfig,
         defaultDate: formattedDateFrom,
@@ -274,7 +275,7 @@ export default class EditView extends AbstractStatefulView {
       },
     );
     this.#datepickerTo = flatpickr(
-      this.element.querySelector('.event__input--time[name="event-end-time"]'),
+      dateToElement,
       {
         ...commonConfig,
         defaultDate: formattedDateTo,

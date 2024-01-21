@@ -10,7 +10,6 @@ export const DateFormats = {
   HOURS: 'HH[H]',
   MINUTES: 'mm[M]',
   BASIC: 'YYYY-MM-DDTHH:mm',
-  Z: 'Z',
   DATEPICKER: 'd/m/y H:i',
 };
 export const CancelButtonNames = {
