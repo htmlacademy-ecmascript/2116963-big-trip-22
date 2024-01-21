@@ -8,7 +8,10 @@ export const DateFormats = {
   DAY_TIME: 'DD/MM/YY HH:mm',
   DAYS: 'DD[D]',
   HOURS: 'HH[H]',
-  MINUTES: 'mm[M]'
+  MINUTES: 'mm[M]',
+  BASIC: 'YYYY-MM-DDTHH:mm',
+  Z: 'Z',
+  DATEPICKER: 'd/m/y H:i',
 };
 export const CancelButtonNames = {
   DELETE: 'Delete',
