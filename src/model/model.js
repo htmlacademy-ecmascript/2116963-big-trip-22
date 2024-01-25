@@ -1,4 +1,6 @@
-export default class Model {
+import Observable from '../framework/observable';
+
+export default class Model extends Observable {
   #points = [];
   #offers = [];
   #destinations = [];
@@ -19,5 +21,38 @@ export default class Model {
 
   get destinations() {
     return this.#destinations;
+  }
+
+  updatePoint(updateType, update) {
+    const index = this.#points.findIndex((point) => point.id === update.id);
+
+    if (index === -1) {
+      throw new Error('Can\'t update unexisting point');
+    }
+
+    this.#points[index] = update;
+
+    this._notify(updateType, update);
+  }
+
+  addPoint(updateType, update) {
+    this.#points = [update, ...this.#points];
+
+    this._notify(updateType, update);
+  }
+
+  deletePoint(updateType, update) {
+    const index = this.#points.findIndex((point) => point.id === update.id);
+
+    if (index === -1) {
+      throw new Error('Can\'t delete unexisting point');
+    }
+
+    this.#points = [
+      ...this.#points.slice(0, index),
+      ...this.#points.slice(index + 1),
+    ];
+
+    this._notify(updateType);
   }
 }

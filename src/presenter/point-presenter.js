@@ -1,6 +1,7 @@
 import { render, replace, remove } from '../framework/render';
 import PointView from '../view/point-view';
 import EditView from '../view/edit-view';
+import { UserAction, UpdateType } from '../const';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -14,13 +15,13 @@ export default class PointPresenter {
   #point = null;
   #offers = [];
   #destinations = [];
-  #handlePointChange = null;
+  #handleViewAction = null;
   #handleModeChange = null;
   #mode = Mode.DEFAULT;
 
-  constructor({ listComponent, handlePointChange, handleModeChange }) {
+  constructor({ listComponent, handleViewAction, handleModeChange }) {
     this.#listComponent = listComponent;
-    this.#handlePointChange = handlePointChange;
+    this.#handleViewAction = handleViewAction;
     this.#handleModeChange = handleModeChange;
   }
 
@@ -100,11 +101,15 @@ export default class PointPresenter {
   };
 
   #handleFavoriteClick = () => {
-    this.#handlePointChange({ ...this.#point, isFavorite: !this.#point.isFavorite });
+    this.#handleViewAction(
+      UserAction.UPDATE_POINT,
+      UpdateType.MINOR,
+      { ...this.#point, isFavorite: !this.#point.isFavorite }
+    );
   };
 
   #handleFormSubmit = (point) => {
-    this.#handlePointChange(point);
+    this.#handleViewAction(UserAction.UPDATE_TASK, UpdateType.MINOR, point);
     this.#replaceFormToPoint();
     document.removeEventListener('keydown', this.#onEscKeyDown);
   };
