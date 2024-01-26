@@ -2,6 +2,7 @@ import { render, replace, remove } from '../framework/render';
 import PointView from '../view/point-view';
 import EditView from '../view/edit-view';
 import { UserAction, UpdateType } from '../const';
+import { isDatesEqual } from '../utils/utils';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -52,7 +53,8 @@ export default class PointPresenter {
         this.#replaceFormToPoint();
         document.addEventListener('keydown', this.#onEscKeyDown);
       },
-      handleFormSubmit: this.#handleFormSubmit
+      handleFormSubmit: this.#handleFormSubmit,
+      handleDeleteClick: this.#handleDeleteClick,
     });
 
     if (prevPointComponent === null || prevEditComponent === null) {
@@ -108,9 +110,23 @@ export default class PointPresenter {
     );
   };
 
-  #handleFormSubmit = (point) => {
-    this.#handleViewAction(UserAction.UPDATE_TASK, UpdateType.MINOR, point);
+  #handleFormSubmit = (update) => {
+    const isPatchUpdate = isDatesEqual(this.#point.dateFrom, update.dateFrom) && isDatesEqual(this.#point.dateTo, update.dateTo);
+    this.#handleViewAction(
+      UserAction.UPDATE_TASK,
+      isPatchUpdate ? UpdateType.PATCH : UpdateType.MINOR,
+      update
+    );
     this.#replaceFormToPoint();
     document.removeEventListener('keydown', this.#onEscKeyDown);
+  };
+
+  #handleDeleteClick = (point) => {
+    this.#handleViewAction(
+      UserAction.DELETE_POINT,
+      UpdateType.MINOR,
+      point,
+    );
+    this.#replaceFormToPoint();
   };
 }

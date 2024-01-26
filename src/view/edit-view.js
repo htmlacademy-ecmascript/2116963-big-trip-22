@@ -135,14 +135,16 @@ export default class EditView extends AbstractView {
   #destinations = [];
   #handleArrowClick = null;
   #handleFormSubmit = null;
+  #handleDeleteClick = null;
 
-  constructor({ point, offers, destinations, handleArrowClick, handleFormSubmit }) {
+  constructor({ point, offers, destinations, handleArrowClick, handleFormSubmit, handleDeleteClick }) {
     super();
     this.#point = point;
     this.#offers = offers;
     this.#destinations = destinations;
     this.#handleArrowClick = handleArrowClick;
     this.#handleFormSubmit = handleFormSubmit;
+    this.#handleDeleteClick = handleDeleteClick;
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#onArrowClick);
     this.element.querySelector('form').addEventListener('submit', this.#onFormSubmit);
   }

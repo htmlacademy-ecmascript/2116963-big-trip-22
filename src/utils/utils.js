@@ -20,6 +20,10 @@ export function getDatesDuration(difference) {
   return dayjs.duration(difference);
 }
 
+export function isDatesEqual(dateA, dateB) {
+  return dayjs(dateA).isSame(dateB);
+}
+
 export function isFuture(dateFrom) {
   return dayjs().isBefore(dayjs(dateFrom));
 }
