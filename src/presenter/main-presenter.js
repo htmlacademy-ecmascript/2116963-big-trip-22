@@ -6,7 +6,7 @@ import EmptyView from '../view/empty-view';
 import { generateFilter } from '../mock/filter';
 import PointPresenter from './point-presenter';
 import { SortType, UpdateType, UserAction } from '../const';
-import { sortPointsTime, sortPointsPrice } from '../utils/utils';
+import { sortPointsDay, sortPointsTime, sortPointsPrice } from '../utils/utils';
 
 export default class MainPresenter {
   #filterContainer = document.querySelector('.trip-controls__filters');
@@ -28,6 +28,8 @@ export default class MainPresenter {
 
   get points() {
     switch (this.#currentSortType) {
+      case SortType.DAY:
+        return [...this.#model.points].sort(sortPointsDay);
       case SortType.TIME:
         return [...this.#model.points].sort(sortPointsTime);
       case SortType.PRICE:
@@ -100,13 +102,13 @@ export default class MainPresenter {
   #handleViewAction = (actionType, updateType, update) => {
     switch (actionType) {
       case UserAction.UPDATE_POINT:
-        this.#model.updateTask(updateType, update);
+        this.#model.updatePoint(updateType, update);
         break;
-      case UserAction.ADD_TASK:
-        this.#model.addTask(updateType, update);
+      case UserAction.ADD_POINT:
+        this.#model.addPoint(updateType, update);
         break;
-      case UserAction.DELETE_TASK:
-        this.#model.deleteTask(updateType, update);
+      case UserAction.DELETE_POINT:
+        this.#model.deletePoint(updateType, update);
         break;
     }
   };
@@ -114,7 +116,7 @@ export default class MainPresenter {
   #handleModelEvent = (updateType, data) => {
     switch (updateType) {
       case UpdateType.PATCH:
-        this.#pointPresenters.get(data.id).init(data);
+        this.#pointPresenters.get(data.id).init(data, this.#offers, this.#destinations);
         break;
       case UpdateType.MINOR:
         this.#clearBoard();

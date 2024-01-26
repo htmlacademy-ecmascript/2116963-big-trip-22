@@ -115,7 +115,7 @@ export default class PointPresenter {
   #handleFormSubmit = (update) => {
     const isPatchUpdate = isDatesEqual(this.#point.dateFrom, update.dateFrom) && isDatesEqual(this.#point.dateTo, update.dateTo);
     this.#handleViewAction(
-      UserAction.UPDATE_TASK,
+      UserAction.UPDATE_POINT,
       isPatchUpdate ? UpdateType.PATCH : UpdateType.MINOR,
       update
     );
@@ -129,6 +129,5 @@ export default class PointPresenter {
       UpdateType.MINOR,
       point,
     );
-    this.#replaceFormToPoint();
   };
 }

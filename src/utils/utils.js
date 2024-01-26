@@ -36,6 +36,10 @@ export function isPresent(dateFrom, dateTo) {
   return dayjs().isAfter(dayjs(dateFrom)) && dayjs().isBefore(dayjs(dateTo));
 }
 
+export function sortPointsDay(pointA, pointB) {
+  return getDatesDifference(pointB.dateFrom, pointA.dateFrom);
+}
+
 export function sortPointsTime(pointA, pointB) {
   return getDatesDifference(pointB.dateFrom, pointB.dateTo) - getDatesDifference(pointA.dateFrom, pointA.dateTo);
 }

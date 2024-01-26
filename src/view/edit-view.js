@@ -198,7 +198,7 @@ export default class EditView extends AbstractStatefulView {
     this.element.querySelector('.event__input--destination').addEventListener('input', this.#onDestinationInput);
     this.element.querySelector('.event__input--price').addEventListener('input', this.#onPriceInput);
     this.element.querySelector('.event__available-offers').addEventListener('click', this.#onOffersClick);
-    this.element.querySelector('.event__reset-btn').addEventListener('submit', this.#onFormDeleteClick);
+    this.element.querySelector('.event__reset-btn').addEventListener('click', this.#onFormDeleteClick);
     this.#setDatepicker();
   }
 
@@ -214,7 +214,7 @@ export default class EditView extends AbstractStatefulView {
 
   #onFormDeleteClick = (evt) => {
     evt.preventDefault();
-    this.#handleDeleteClick(EditView.parseStateToTask(this._state));
+    this.#handleDeleteClick(EditView.parseStateToPoint(this._state));
   };
 
   #onTripTypeClick = (evt) => {
