@@ -8,7 +8,7 @@ import PointPresenter from './point-presenter';
 import { SortType, UpdateType, UserAction } from '../const';
 import { sortPointsTime, sortPointsPrice } from '../utils/utils';
 
-export default class Presenter {
+export default class MainPresenter {
   #filterContainer = document.querySelector('.trip-controls__filters');
   #tripEventsContainer = document.querySelector('.trip-events');
   #listComponent = new ListView();
