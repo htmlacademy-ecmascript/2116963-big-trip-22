@@ -4,6 +4,16 @@ import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
+const blankPoint = {
+  id: 0,
+  basePrice: 0,
+  dateFrom: new Date(),
+  dateTo: new Date(),
+  destination: '',
+  isFavorite: false,
+  offers: [],
+  type: TRAVEL_TYPES[0]
+};
 
 function createTypeListTemplate(pointType, pointId) {
   return TRAVEL_TYPES.map((type) => {
@@ -65,13 +75,13 @@ function createDestinationTemplate(pointDestination) {
 
 function createEditTemplate(point, offers, destinations) {
   const {
-    id: pointId = 0,
-    basePrice = '',
-    dateFrom = formatDate(new Date(), DateFormats.DAY_TIME),
-    dateTo = formatDate(new Date(), DateFormats.DAY_TIME),
-    destination = '',
-    offers: checkedOffers = [],
-    type = TRAVEL_TYPES[0]
+    id: pointId,
+    basePrice,
+    dateFrom,
+    dateTo,
+    destination,
+    offers: checkedOffers,
+    type
   } = point;
   const pointOffers = [...offers.find((offer) => offer.type === type).offers];
   const pointDestination = destinations.find((item) => destination === item.id);
@@ -157,7 +167,7 @@ export default class EditView extends AbstractStatefulView {
   #datepickerFrom = null;
   #datepickerTo = null;
 
-  constructor({ point, offers, destinations, handleArrowClick, handleFormSubmit, handleDeleteClick }) {
+  constructor({ point = blankPoint, offers, destinations, handleArrowClick, handleFormSubmit, handleDeleteClick }) {
     super();
     this._setState(EditView.parsePointToState(point));
     this.#offers = offers;
@@ -192,7 +202,9 @@ export default class EditView extends AbstractStatefulView {
   }
 
   _restoreHandlers() {
-    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#onArrowClick);
+    if (this._state.id !== 0) {
+      this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#onArrowClick);
+    }
     this.element.querySelector('form').addEventListener('submit', this.#onFormSubmit);
     this.element.querySelector('.event__type-group').addEventListener('click', this.#onTripTypeClick);
     this.element.querySelector('.event__input--destination').addEventListener('input', this.#onDestinationInput);
@@ -246,19 +258,17 @@ export default class EditView extends AbstractStatefulView {
   };
 
   #onDateFromChange = ([userDate]) => {
-    this.updateElement({
+    this._setState({
       dateFrom: userDate,
     });
-    this.#datepickerFrom.set('maxDate', formatDate(this._state.dateTo, DateFormats.DAY_TIME));
     this.#datepickerTo.set('minDate', formatDate(this._state.dateFrom, DateFormats.DAY_TIME));
   };
 
   #onDateToChange = ([userDate]) => {
-    this.updateElement({
+    this._setState({
       dateTo: userDate,
     });
     this.#datepickerFrom.set('maxDate', formatDate(this._state.dateTo, DateFormats.DAY_TIME));
-    this.#datepickerTo.set('minDate', formatDate(this._state.dateFrom, DateFormats.DAY_TIME));
   };
 
   #setDatepicker() {

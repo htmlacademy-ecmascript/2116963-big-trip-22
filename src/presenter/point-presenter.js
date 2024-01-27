@@ -51,7 +51,7 @@ export default class PointPresenter {
       destinations: this.#destinations,
       handleArrowClick: () => {
         this.#replaceFormToPoint();
-        document.addEventListener('keydown', this.#onEscKeyDown);
+        document.removeEventListener('keydown', this.#onEscKeyDown);
       },
       handleFormSubmit: this.#handleFormSubmit,
       handleDeleteClick: this.#handleDeleteClick,
@@ -113,7 +113,9 @@ export default class PointPresenter {
   };
 
   #handleFormSubmit = (update) => {
-    const isPatchUpdate = isDatesEqual(this.#point.dateFrom, update.dateFrom) && isDatesEqual(this.#point.dateTo, update.dateTo);
+    const isPatchUpdate = isDatesEqual(this.#point.dateFrom, update.dateFrom)
+     && isDatesEqual(this.#point.dateTo, update.dateTo)
+     && this.#point.basePrice === update.basePrice;
     this.#handleViewAction(
       UserAction.UPDATE_POINT,
       isPatchUpdate ? UpdateType.PATCH : UpdateType.MINOR,
