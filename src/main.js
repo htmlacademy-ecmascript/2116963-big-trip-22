@@ -1,10 +1,15 @@
 import MainPresenter from './presenter/main-presenter';
-import Model from './model/model';
+import FilterPresenter from './presenter/filter-presenter';
+import PointsModel from './model/points-model';
+import FilterModel from './model/filter-model';
 import { mockPoints } from './mock/points';
 import { mockOffers } from './mock/offers';
 import { mockDestinations } from './mock/destinations';
 
-const model = new Model();
-model.init(mockPoints, mockOffers, mockDestinations);
-const presenter = new MainPresenter({ model });
-presenter.init();
+const pointsModel = new PointsModel();
+const filterModel = new FilterModel();
+pointsModel.init(mockPoints, mockOffers, mockDestinations);
+const mainPresenter = new MainPresenter({ pointsModel });
+const filterPresenter = new FilterPresenter({ filterModel, pointsModel });
+mainPresenter.init();
+filterPresenter.init();

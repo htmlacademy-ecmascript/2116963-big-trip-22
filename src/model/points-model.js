@@ -1,6 +1,6 @@
 import Observable from '../framework/observable';
 
-export default class Model extends Observable {
+export default class PointsModel extends Observable {
   #points = [];
   #offers = [];
   #destinations = [];

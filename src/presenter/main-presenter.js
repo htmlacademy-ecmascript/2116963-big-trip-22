@@ -1,49 +1,42 @@
 import { render, remove } from '../framework/render';
-import FilterView from '../view/filter-view';
 import SortView from '../view/sort-view';
 import ListView from '../view/list-view';
 import EmptyView from '../view/empty-view';
-import { generateFilter } from '../mock/filter';
 import PointPresenter from './point-presenter';
 import { SortType, UpdateType, UserAction } from '../const';
 import { sortPointsDay, sortPointsTime, sortPointsPrice } from '../utils/utils';
 
 export default class MainPresenter {
-  #filterContainer = document.querySelector('.trip-controls__filters');
   #tripEventsContainer = document.querySelector('.trip-events');
   #listComponent = new ListView();
   #sortComponent = null;
-  #model = null;
+  #pointsModel = null;
   #offers = [];
   #destinations = [];
-  #filters = [];
   #pointPresenters = new Map();
   #currentSortType = SortType.DAY;
   #noPointsComponent = new EmptyView();
 
-  constructor({ model }) {
-    this.#model = model;
-    this.#model.addObserver(this.#handleModelEvent);
+  constructor({ pointsModel }) {
+    this.#pointsModel = pointsModel;
+    this.#pointsModel.addObserver(this.#handleModelEvent);
   }
 
   get points() {
     switch (this.#currentSortType) {
       case SortType.DAY:
-        return [...this.#model.points].sort(sortPointsDay);
+        return [...this.#pointsModel.points].sort(sortPointsDay);
       case SortType.TIME:
-        return [...this.#model.points].sort(sortPointsTime);
+        return [...this.#pointsModel.points].sort(sortPointsTime);
       case SortType.PRICE:
-        return [...this.#model.points].sort(sortPointsPrice);
+        return [...this.#pointsModel.points].sort(sortPointsPrice);
     }
-    return this.#model.points;
+    return this.#pointsModel.points;
   }
 
   init() {
-    this.#offers = [...this.#model.offers];
-    this.#destinations = [...this.#model.destinations];
-    this.#filters = generateFilter(this.points);
-
-    render(new FilterView({ filters: this.#filters }), this.#filterContainer);
+    this.#offers = [...this.#pointsModel.offers];
+    this.#destinations = [...this.#pointsModel.destinations];
     this.#renderBoard();
   }
 
@@ -102,13 +95,13 @@ export default class MainPresenter {
   #handleViewAction = (actionType, updateType, update) => {
     switch (actionType) {
       case UserAction.UPDATE_POINT:
-        this.#model.updatePoint(updateType, update);
+        this.#pointsModel.updatePoint(updateType, update);
         break;
       case UserAction.ADD_POINT:
-        this.#model.addPoint(updateType, update);
+        this.#pointsModel.addPoint(updateType, update);
         break;
       case UserAction.DELETE_POINT:
-        this.#model.deletePoint(updateType, update);
+        this.#pointsModel.deletePoint(updateType, update);
         break;
     }
   };
