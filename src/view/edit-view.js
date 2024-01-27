@@ -249,14 +249,16 @@ export default class EditView extends AbstractStatefulView {
     this.updateElement({
       dateFrom: userDate,
     });
-    this.#datepickerTo.set.minDate = this._state.dateFrom;
+    this.#datepickerFrom.set('maxDate', formatDate(this._state.dateTo, DateFormats.DAY_TIME));
+    this.#datepickerTo.set('minDate', formatDate(this._state.dateFrom, DateFormats.DAY_TIME));
   };
 
   #onDateToChange = ([userDate]) => {
     this.updateElement({
       dateTo: userDate,
     });
-    this.#datepickerFrom.config.maxDate = this._state.dateTo;
+    this.#datepickerFrom.set('maxDate', formatDate(this._state.dateTo, DateFormats.DAY_TIME));
+    this.#datepickerTo.set('minDate', formatDate(this._state.dateFrom, DateFormats.DAY_TIME));
   };
 
   #setDatepicker() {
@@ -279,7 +281,7 @@ export default class EditView extends AbstractStatefulView {
         ...commonConfig,
         defaultDate: formattedDateFrom,
         onChange: this.#onDateFromChange,
-        maxDate: formattedDateFrom
+        maxDate: formattedDateTo
       },
     );
     this.#datepickerTo = flatpickr(
@@ -288,7 +290,7 @@ export default class EditView extends AbstractStatefulView {
         ...commonConfig,
         defaultDate: formattedDateTo,
         onChange: this.#onDateToChange,
-        minDate: formattedDateTo,
+        minDate: formattedDateFrom,
       },
     );
   }
