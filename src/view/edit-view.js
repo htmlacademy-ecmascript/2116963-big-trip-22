@@ -4,6 +4,16 @@ import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
+const blankPoint = {
+  id: 0,
+  basePrice: 0,
+  dateFrom: new Date(),
+  dateTo: new Date(),
+  destination: '',
+  isFavorite: false,
+  offers: [],
+  type: TRAVEL_TYPES[0]
+};
 
 function createTypeListTemplate(pointType, pointId) {
   return TRAVEL_TYPES.map((type) => {
@@ -65,13 +75,13 @@ function createDestinationTemplate(pointDestination) {
 
 function createEditTemplate(point, offers, destinations) {
   const {
-    id: pointId = 0,
-    basePrice = '',
-    dateFrom = formatDate(new Date(), DateFormats.DAY_TIME),
-    dateTo = formatDate(new Date(), DateFormats.DAY_TIME),
-    destination = '',
-    offers: checkedOffers = [],
-    type = TRAVEL_TYPES[0]
+    id: pointId,
+    basePrice,
+    dateFrom,
+    dateTo,
+    destination,
+    offers: checkedOffers,
+    type
   } = point;
   const pointOffers = [...offers.find((offer) => offer.type === type).offers];
   const pointDestination = destinations.find((item) => destination === item.id);
@@ -153,16 +163,18 @@ export default class EditView extends AbstractStatefulView {
   #destinations = [];
   #handleArrowClick = null;
   #handleFormSubmit = null;
+  #handleDeleteClick = null;
   #datepickerFrom = null;
   #datepickerTo = null;
 
-  constructor({ point, offers, destinations, handleArrowClick, handleFormSubmit }) {
+  constructor({ point = blankPoint, offers, destinations, handleArrowClick, handleFormSubmit, handleDeleteClick }) {
     super();
     this._setState(EditView.parsePointToState(point));
     this.#offers = offers;
     this.#destinations = destinations;
     this.#handleArrowClick = handleArrowClick;
     this.#handleFormSubmit = handleFormSubmit;
+    this.#handleDeleteClick = handleDeleteClick;
     this._restoreHandlers();
   }
 
@@ -190,12 +202,15 @@ export default class EditView extends AbstractStatefulView {
   }
 
   _restoreHandlers() {
-    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#onArrowClick);
+    if (this._state.id !== 0) {
+      this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#onArrowClick);
+    }
     this.element.querySelector('form').addEventListener('submit', this.#onFormSubmit);
     this.element.querySelector('.event__type-group').addEventListener('click', this.#onTripTypeClick);
     this.element.querySelector('.event__input--destination').addEventListener('input', this.#onDestinationInput);
     this.element.querySelector('.event__input--price').addEventListener('input', this.#onPriceInput);
     this.element.querySelector('.event__available-offers').addEventListener('click', this.#onOffersClick);
+    this.element.querySelector('.event__reset-btn').addEventListener('click', this.#onFormDeleteClick);
     this.#setDatepicker();
   }
 
@@ -207,6 +222,11 @@ export default class EditView extends AbstractStatefulView {
   #onFormSubmit = (evt) => {
     evt.preventDefault();
     this.#handleFormSubmit(EditView.parseStateToPoint(this._state));
+  };
+
+  #onFormDeleteClick = (evt) => {
+    evt.preventDefault();
+    this.#handleDeleteClick(EditView.parseStateToPoint(this._state));
   };
 
   #onTripTypeClick = (evt) => {
@@ -238,17 +258,17 @@ export default class EditView extends AbstractStatefulView {
   };
 
   #onDateFromChange = ([userDate]) => {
-    this.updateElement({
+    this._setState({
       dateFrom: userDate,
     });
-    this.#datepickerTo.set.minDate = this._state.dateFrom;
+    this.#datepickerTo.set('minDate', formatDate(this._state.dateFrom, DateFormats.DAY_TIME));
   };
 
   #onDateToChange = ([userDate]) => {
-    this.updateElement({
+    this._setState({
       dateTo: userDate,
     });
-    this.#datepickerFrom.config.maxDate = this._state.dateTo;
+    this.#datepickerFrom.set('maxDate', formatDate(this._state.dateTo, DateFormats.DAY_TIME));
   };
 
   #setDatepicker() {
@@ -271,7 +291,7 @@ export default class EditView extends AbstractStatefulView {
         ...commonConfig,
         defaultDate: formattedDateFrom,
         onChange: this.#onDateFromChange,
-        maxDate: formattedDateFrom
+        maxDate: formattedDateTo
       },
     );
     this.#datepickerTo = flatpickr(
@@ -280,7 +300,7 @@ export default class EditView extends AbstractStatefulView {
         ...commonConfig,
         defaultDate: formattedDateTo,
         onChange: this.#onDateToChange,
-        minDate: formattedDateTo,
+        minDate: formattedDateFrom,
       },
     );
   }

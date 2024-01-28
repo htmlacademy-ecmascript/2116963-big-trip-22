@@ -32,8 +32,8 @@ const mockPoints = [
   {
     'id': 4,
     'basePrice': 300,
-    'dateFrom': '2019-03-22T12:00',
-    'dateTo': '2019-03-22T22:00',
+    'dateFrom': '2024-03-22T12:00',
+    'dateTo': '2024-03-22T22:00',
     'destination': 3,
     'isFavorite': true,
     'offers': [1],

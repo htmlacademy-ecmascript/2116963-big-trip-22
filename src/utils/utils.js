@@ -20,6 +20,10 @@ export function getDatesDuration(difference) {
   return dayjs.duration(difference);
 }
 
+export function isDatesEqual(dateA, dateB) {
+  return dayjs(dateA).isSame(dateB);
+}
+
 export function isFuture(dateFrom) {
   return dayjs().isBefore(dayjs(dateFrom));
 }
@@ -32,8 +36,8 @@ export function isPresent(dateFrom, dateTo) {
   return dayjs().isAfter(dayjs(dateFrom)) && dayjs().isBefore(dayjs(dateTo));
 }
 
-export function updateItem(items, update) {
-  return items.map((item) => item.id === update.id ? update : item);
+export function sortPointsDay(pointA, pointB) {
+  return getDatesDifference(pointB.dateFrom, pointA.dateFrom);
 }
 
 export function sortPointsTime(pointA, pointB) {
