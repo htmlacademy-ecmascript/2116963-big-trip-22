@@ -99,7 +99,6 @@ export default class PointPresenter {
 
   #onEscKeyDown = (evt) => {
     if (evt.key === 'Escape') {
-      console.log(1);
       evt.preventDefault();
       this.#replaceFormToPoint();
     }
