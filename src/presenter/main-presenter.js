@@ -27,7 +27,7 @@ export default class MainPresenter {
     this.#filterModel = filterModel;
 
     this.#newPointPresenter = new NewPointPresenter({
-      listContainer: this.#listContainer,
+      listComponent: this.#listComponent,
       handleViewAction: this.#handleViewAction,
       createPoint: this.#createPoint,
     });
@@ -161,6 +161,7 @@ export default class MainPresenter {
   };
 
   #createPoint = () => {
+    this.#pointPresenters.forEach((presenter) => presenter.removeEsc());
     this.#currentSortType = SortType.DAY;
     this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
     this.#newPointPresenter.init(this.#offers, this.#destinations);

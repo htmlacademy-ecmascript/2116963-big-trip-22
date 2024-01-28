@@ -5,15 +5,15 @@ import { UserAction, UpdateType } from '../const.js';
 import NewButtonView from '../view/new-button-view.js';
 
 export default class NewPointPresenter {
-  #listContainer = null;
+  #listComponent = null;
   #handleViewAction = null;
   #createPoint = null;
   #editComponent = null;
   #newButtonContainer = document.querySelector('.trip-main');
   #newButtonComponent = null;
 
-  constructor({ listContainer, handleViewAction, createPoint }) {
-    this.#listContainer = listContainer;
+  constructor({ listComponent, handleViewAction, createPoint }) {
+    this.#listComponent = listComponent;
     this.#handleViewAction = handleViewAction;
     this.#createPoint = createPoint;
     this.#newButtonComponent = new NewButtonView({
@@ -30,7 +30,7 @@ export default class NewPointPresenter {
         handleFormSubmit: this.#handleFormSubmit,
         handleDeleteClick: this.#handleDeleteClick
       });
-      render(this.#editComponent, this.#listContainer, RenderPosition.AFTERBEGIN);
+      render(this.#editComponent, this.#listComponent.element, RenderPosition.AFTERBEGIN);
       document.addEventListener('keydown', this.#onEscKeyDown);
     }
   }

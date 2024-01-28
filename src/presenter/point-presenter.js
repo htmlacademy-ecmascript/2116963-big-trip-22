@@ -38,10 +38,7 @@ export default class PointPresenter {
       point: this.#point,
       offers: this.#offers,
       destinations: this.#destinations,
-      handleArrowClick: () => {
-        this.#replacePointToForm();
-        document.addEventListener('keydown', this.#onEscKeyDown);
-      },
+      handleArrowClick: this.#replacePointToForm,
       handleFavoriteClick: this.#handleFavoriteClick
     });
 
@@ -49,10 +46,7 @@ export default class PointPresenter {
       point: this.#point,
       offers: this.#offers,
       destinations: this.#destinations,
-      handleArrowClick: () => {
-        this.#replaceFormToPoint();
-        document.removeEventListener('keydown', this.#onEscKeyDown);
-      },
+      handleArrowClick:  this.#replaceFormToPoint,
       handleFormSubmit: this.#handleFormSubmit,
       handleDeleteClick: this.#handleDeleteClick,
     });
@@ -77,30 +71,37 @@ export default class PointPresenter {
     remove(this.#editComponent);
   }
 
+  removeEsc() {
+    if (this.#mode === Mode.EDITING) {
+      document.removeEventListener('keydown', this.#onEscKeyDown);
+    }
+  }
+
   resetView() {
     if (this.#mode === Mode.EDITING) {
-      this.#editComponent.reset(this.#point);
       this.#replaceFormToPoint();
     }
   }
 
-  #replacePointToForm() {
+  #replacePointToForm = () => {
     this.#handleModeChange();
     this.#mode = Mode.EDITING;
     replace(this.#editComponent, this.#pointComponent);
-  }
+    document.addEventListener('keydown', this.#onEscKeyDown);
+  };
 
-  #replaceFormToPoint() {
+  #replaceFormToPoint = () => {
     this.#mode = Mode.DEFAULT;
     this.#editComponent.reset(this.#point);
     replace(this.#pointComponent, this.#editComponent);
-  }
+    document.removeEventListener('keydown', this.#onEscKeyDown);
+  };
 
   #onEscKeyDown = (evt) => {
     if (evt.key === 'Escape') {
+      console.log(1);
       evt.preventDefault();
       this.#replaceFormToPoint();
-      document.removeEventListener('keydown', this.#onEscKeyDown);
     }
   };
 
@@ -122,10 +123,10 @@ export default class PointPresenter {
       update
     );
     this.#replaceFormToPoint();
-    document.removeEventListener('keydown', this.#onEscKeyDown);
   };
 
   #handleDeleteClick = (point) => {
+    document.removeEventListener('keydown', this.#onEscKeyDown);
     this.#handleViewAction(
       UserAction.DELETE_POINT,
       UpdateType.MINOR,
