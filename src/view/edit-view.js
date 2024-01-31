@@ -209,7 +209,10 @@ export default class EditView extends AbstractStatefulView {
     this.element.querySelector('.event__type-group').addEventListener('click', this.#onTripTypeClick);
     this.element.querySelector('.event__input--destination').addEventListener('input', this.#onDestinationInput);
     this.element.querySelector('.event__input--price').addEventListener('input', this.#onPriceInput);
-    this.element.querySelector('.event__available-offers').addEventListener('click', this.#onOffersClick);
+    const availableOffersElement = this.element.querySelector('.event__available-offers');
+    if (availableOffersElement) {
+      availableOffersElement.addEventListener('click', this.#onOffersClick);
+    }
     this.element.querySelector('.event__reset-btn').addEventListener('click', this.#onFormDeleteClick);
     this.#setDatepicker();
   }

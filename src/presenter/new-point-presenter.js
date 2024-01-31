@@ -19,7 +19,6 @@ export default class NewPointPresenter {
     this.#newButtonComponent = new NewButtonView({
       handleNewButtonClick: this.#handleNewButtonClick,
     });
-    render(this.#newButtonComponent, this.#newButtonContainer);
   }
 
   init(offers, destinations) {
@@ -33,6 +32,10 @@ export default class NewPointPresenter {
       render(this.#editComponent, this.#listComponent.element, RenderPosition.AFTERBEGIN);
       document.addEventListener('keydown', this.#onEscKeyDown);
     }
+  }
+
+  renderNewButton() {
+    render(this.#newButtonComponent, this.#newButtonContainer);
   }
 
   destroy() {

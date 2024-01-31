@@ -1,14 +1,35 @@
 import Observable from '../framework/observable';
+import { UpdateType } from '../const.js';
 
 export default class PointsModel extends Observable {
   #points = [];
   #offers = [];
   #destinations = [];
+  #pointsApiService = null;
 
-  init(points, offers, destinations) {
-    this.#points = points;
-    this.#offers = offers;
-    this.#destinations = destinations;
+  constructor({ pointsApiService }) {
+    super();
+    this.#pointsApiService = pointsApiService;
+  }
+
+  async init() {
+    try {
+      const points = await this.#pointsApiService.points;
+      this.#points = points.map(this.#adaptToClient);
+    } catch (err) {
+      this.#points = [];
+    }
+    try {
+      this.#offers = await this.#pointsApiService.offers;
+    } catch (err) {
+      this.#offers = [];
+    }
+    try {
+      this.#destinations = await this.#pointsApiService.destinations;
+    } catch (err) {
+      this.#destinations = [];
+    }
+    this._notify(UpdateType.INIT);
   }
 
   get points() {
@@ -54,5 +75,22 @@ export default class PointsModel extends Observable {
     ];
 
     this._notify(updateType);
+  }
+
+  #adaptToClient(point) {
+    const adaptedPoint = {
+      ...point,
+      basePrice: point['base_price'],
+      dateFrom: point['date_from'] !== null ? new Date(point['date_from']) : point['date_from'],
+      dateTo: point['date_to'] !== null ? new Date(point['date_to']) : point['date_to'],
+      isFavorite: point['is_favorite'],
+    };
+
+    delete adaptedPoint['base_price'];
+    delete adaptedPoint['date_from'];
+    delete adaptedPoint['date_to'];
+    delete adaptedPoint['is_favorite'];
+
+    return adaptedPoint;
   }
 }
