@@ -17,6 +17,6 @@ const pointsModel = new PointsModel({ pointsApiService: new PointsApiService(END
 const filterModel = new FilterModel();
 pointsModel.init();
 const mainPresenter = new MainPresenter({ pointsModel, filterModel });
-const filterPresenter = new FilterPresenter({ pointsModel, filterModel });
+// const filterPresenter = new FilterPresenter({ pointsModel, filterModel });
 mainPresenter.init();
-filterPresenter.init();
+// filterPresenter.init();

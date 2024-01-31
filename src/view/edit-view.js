@@ -4,11 +4,13 @@ import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
+const newDateTo = new Date();
+
 const blankPoint = {
   id: 0,
   basePrice: 0,
   dateFrom: new Date(),
-  dateTo: new Date(),
+  dateTo: new Date(newDateTo.setMinutes(newDateTo.getMinutes() + 60)),
   destination: '',
   isFavorite: false,
   offers: [],
@@ -284,26 +286,26 @@ export default class EditView extends AbstractStatefulView {
       },
       disableMobile: 'true'
     };
-    const formattedDateFrom = formatDate(this._state.dateFrom, DateFormats.DAY_TIME);
-    const formattedDateTo = formatDate(this._state.dateTo, DateFormats.DAY_TIME);
+    // const formattedDateFrom = formatDate(this._state.dateFrom, DateFormats.DAY_TIME);
+    // const formattedDateTo = formatDate(this._state.dateTo, DateFormats.DAY_TIME);
     const [dateFromElement, dateToElement] = this.element.querySelectorAll('.event__input--time');
 
     this.#datepickerFrom = flatpickr(
       dateFromElement,
       {
         ...commonConfig,
-        defaultDate: formattedDateFrom,
+        defaultDate: this._state.dateFrom,
         onChange: this.#onDateFromChange,
-        maxDate: formattedDateTo
+        maxDate: this._state.dateTo
       },
     );
     this.#datepickerTo = flatpickr(
       dateToElement,
       {
         ...commonConfig,
-        defaultDate: formattedDateTo,
+        defaultDate: this._state.dateTo,
         onChange: this.#onDateToChange,
-        minDate: formattedDateFrom,
+        minDate: this._state.dateFrom,
       },
     );
   }
@@ -314,8 +316,13 @@ export default class EditView extends AbstractStatefulView {
 
   static parseStateToPoint(state) {
     const point = { ...state };
-    point.dateFrom = formatDate(state.dateFrom, DateFormats.BASIC);
-    point.dateTo = formatDate(state.dateTo, DateFormats.BASIC);
+    if (point.id === 0) {
+      delete point.id;
+    }
+    // point.dateFrom = formatDate(state.dateFrom, DateFormats.BASIC);
+    // point.dateTo = formatDate(state.dateTo, DateFormats.BASIC);
+    // point.dateFrom = new Date(state.dateFrom);
+    // point.dateTo = new Date(state.dateTo);
     return point;
   }
 }
