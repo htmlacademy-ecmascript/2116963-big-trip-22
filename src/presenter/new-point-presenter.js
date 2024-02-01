@@ -47,13 +47,32 @@ export default class NewPointPresenter {
     document.removeEventListener('keydown', this.#onEscKeyDown);
   }
 
+  setSaving() {
+    this.#editComponent.updateElement({
+      isDisabled: true,
+      isSaving: true,
+    });
+  }
+
+  setAborting() {
+    const resetFormState = () => {
+      this.#editComponent.updateElement({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+
+    this.#editComponent.shake(resetFormState);
+  }
+
   #handleFormSubmit = (point) => {
     this.#handleViewAction(
       UserAction.ADD_POINT,
       UpdateType.MINOR,
       point,
     );
-    this.destroy();
+    // this.destroy();
   };
 
   #handleDeleteClick = () => {

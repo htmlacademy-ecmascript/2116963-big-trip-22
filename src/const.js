@@ -12,10 +12,10 @@ export const DateFormats = {
   BASIC: 'YYYY-MM-DDTHH:mm',
   DATEPICKER: 'd/m/y H:i',
 };
-export const CancelButtonNames = {
-  DELETE: 'Delete',
-  CANCEL: 'Cancel'
-};
+// export const CancelButtonNames = {
+//   DELETE: 'Delete',
+//   CANCEL: 'Cancel'
+// };
 export const FilterType = {
   EVERYTHING: 'everything',
   FUTURE: 'future',
@@ -40,4 +40,8 @@ export const UpdateType = {
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
   INIT: 'INIT',
+};
+export const UiBlockTimeLimit = {
+  LOWER_LIMIT: 350,
+  UPPER_LIMIT: 1000,
 };
