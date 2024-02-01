@@ -1,4 +1,4 @@
-import { TRAVEL_TYPES, DateFormats } from '../const';
+import { TRAVEL_TYPES, BASIC_TRAVEL_TYPE, DateFormats } from '../const';
 import { formatDate } from '../utils/utils';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 import flatpickr from 'flatpickr';
@@ -9,12 +9,14 @@ const newDateTo = new Date();
 const blankPoint = {
   id: 0,
   basePrice: 0,
-  dateFrom: new Date(),
-  dateTo: new Date(newDateTo.setMinutes(newDateTo.getMinutes() + 60)),
+  // dateFrom: new Date(),
+  // dateTo: new Date(newDateTo.setMinutes(newDateTo.getMinutes() + 60)),
+  dateFrom: '',
+  dateTo: '',
   destination: '',
   isFavorite: false,
   offers: [],
-  type: TRAVEL_TYPES[0]
+  type: BASIC_TRAVEL_TYPE
 };
 
 function createTypeListTemplate(pointType, pointId) {
@@ -80,8 +82,8 @@ function createEditTemplate(point, offers, destinations) {
   const {
     id: pointId,
     basePrice,
-    dateFrom,
-    dateTo,
+    // dateFrom,
+    // dateTo,
     destination,
     offers: checkedOffers,
     type,
@@ -143,14 +145,14 @@ function createEditTemplate(point, offers, destinations) {
               id="event-start-time-${pointId}"
               type="text"
               name="event-start-time"
-              value="${formatDate(dateFrom, DateFormats.DAY_TIME)}"
+              value=""
               ${isDisabled ? 'disabled' : ''}>
             &mdash;
             <label class="visually-hidden" for="event-end-time-${pointId}">To</label>
             <input class="event__input  event__input--time"
               id="event-end-time-${pointId}"
               type="text" name="event-end-time"
-              value="${formatDate(dateTo, DateFormats.DAY_TIME)}"
+              value=""
               ${isDisabled ? 'disabled' : ''}>
           </div>
 

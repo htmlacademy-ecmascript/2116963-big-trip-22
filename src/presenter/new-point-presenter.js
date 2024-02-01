@@ -1,18 +1,27 @@
-import { remove, render, RenderPosition } from '../framework/render.js';
+import { remove, render, RenderPosition, replace } from '../framework/render.js';
 import EditView from '../view/edit-view.js';
 import { UserAction, UpdateType } from '../const.js';
 import NewButtonView from '../view/new-button-view.js';
 
 export default class NewPointPresenter {
   #listComponent = null;
+  // #listContainer = null;
+  // #noPointsComponent = null;
+  #pointsModel = null;
+  #renderNoPoints = null;
+
   #handleViewAction = null;
   #createPoint = null;
   #editComponent = null;
   #newButtonContainer = document.querySelector('.trip-main');
   #newButtonComponent = null;
 
-  constructor({ listComponent, handleViewAction, createPoint }) {
+  constructor({ listComponent, pointsModel, handleViewAction, createPoint, renderNoPoints }) {
     this.#listComponent = listComponent;
+    // this.#listContainer = listContainer;
+    // this.#noPointsComponent = noPointsComponent;
+    this.#pointsModel = pointsModel;
+    this.#renderNoPoints = renderNoPoints;
     this.#handleViewAction = handleViewAction;
     this.#createPoint = createPoint;
     this.#newButtonComponent = new NewButtonView({
@@ -28,6 +37,9 @@ export default class NewPointPresenter {
         handleFormSubmit: this.#handleFormSubmit,
         handleDeleteClick: this.#handleDeleteClick
       });
+      if (this.#listComponent === null) {
+        replace();
+      }
       render(this.#editComponent, this.#listComponent.element, RenderPosition.AFTERBEGIN);
       document.addEventListener('keydown', this.#onEscKeyDown);
     }
@@ -45,6 +57,9 @@ export default class NewPointPresenter {
     remove(this.#editComponent);
     this.#editComponent = null;
     document.removeEventListener('keydown', this.#onEscKeyDown);
+    if (!this.#pointsModel.points.length) {
+      this.#renderNoPoints();
+    }
   }
 
   setSaving() {

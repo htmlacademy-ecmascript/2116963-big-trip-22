@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
+import { MinutesIn, DIfferenceUnits } from '../const';
 
 dayjs.extend(duration);
 
@@ -15,10 +16,17 @@ export function formatDate(date, template) {
 export function getDatesDifference(dateFrom, dateTo) {
   return dayjs(dateTo).diff(dayjs(dateFrom));
 }
-
-export function getDatesDuration(difference) {
-  return dayjs.duration(difference);
+export function getDifferenceTime(dateFrom, dateTo) {
+  const difference = dayjs(dateTo).diff(dayjs(dateFrom), DIfferenceUnits.MINUTE);
+  const days = Math.floor(difference / MinutesIn.DAY);
+  const hours = Math.floor((difference % MinutesIn.DAY) / MinutesIn.HOUR);
+  const minutes = Math.floor(difference % MinutesIn.HOUR);
+  return {days, hours, minutes};
 }
+
+// export function getDatesDuration(difference) {
+//   return dayjs.duration(difference);
+// }
 
 export function isDatesEqual(dateA, dateB) {
   return dayjs(dateA).isSame(dateB);

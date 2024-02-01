@@ -1,4 +1,4 @@
-import { render, remove } from '../framework/render';
+import { render, remove, replace, RenderPosition } from '../framework/render';
 import SortView from '../view/sort-view';
 import ListView from '../view/list-view';
 import NoPointsView from '../view/no-points-view.js';
@@ -8,6 +8,7 @@ import { SortType, UpdateType, UserAction, FilterType, UiBlockTimeLimit } from '
 import { sortPointsDay, sortPointsTime, sortPointsPrice } from '../utils/utils';
 import { filter } from '../utils/filter.js';
 import LoadingView from '../view/loading-view.js';
+import FailView from '../view/fail-view.js';
 import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
 // import FilterPresenter from './filter-presenter.js';
 
@@ -40,8 +41,12 @@ export default class MainPresenter {
 
     this.#newPointPresenter = new NewPointPresenter({
       listComponent: this.#listComponent,
+      pointsModel: this.#pointsModel,
+      // listContainer: this.#listContainer,
+      // noPointsComponent: this.#noPointsComponent,
       handleViewAction: this.#handleViewAction,
       createPoint: this.#createPoint,
+      renderNoPoints: this.#renderNoPoints
     });
 
     this.#pointsModel.addObserver(this.#handleModelEvent);
@@ -49,6 +54,7 @@ export default class MainPresenter {
   }
 
   get points() {
+    //////!
     this.#filterType = this.#filterModel.filter;
     const points = this.#pointsModel.points;
     const filteredPoints = filter[this.#filterType](points);
@@ -62,6 +68,7 @@ export default class MainPresenter {
         return filteredPoints.sort(sortPointsPrice);
     }
     return filteredPoints;
+    // return [];
   }
 
   init() {
@@ -86,12 +93,12 @@ export default class MainPresenter {
     this.#newPointPresenter.renderNewButton();
   }
 
-  #renderNoPoints() {
+  #renderNoPoints = () => {
     this.#noPointsComponent = new NoPointsView({
       filterType: this.#filterType
     });
     render(this.#noPointsComponent, this.#listContainer);
-  }
+  };
 
   #renderBoard() {
     const points = this.points;
@@ -188,12 +195,14 @@ export default class MainPresenter {
         this.#offers = [...this.#pointsModel.offers];
         this.#destinations = [...this.#pointsModel.destinations];
         // this.#filterPresenter.init();
-        if (this.#pointsModel.points.length && this.#offers.length && this.#destinations.length) {
+        if (this.#pointsModel.isFailedToLoad) {
+          replace(new FailView(), this.#loadingComponent);
+        } else {
           this.#isLoading = false;
-          remove(this.#loadingComponent);
           this.#renderNewButton();
           this.#renderBoard();
         }
+        remove(this.#loadingComponent);
         break;
     }
   };
@@ -216,6 +225,9 @@ export default class MainPresenter {
     this.#pointPresenters.forEach((presenter) => presenter.removeEsc());
     this.#currentSortType = SortType.DAY;
     this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+    if (!this.#pointsModel.points.length) {
+      replace(this.#listComponent, this.#noPointsComponent);
+    }
     this.#newPointPresenter.init(this.#offers, this.#destinations);
   };
 }

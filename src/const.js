@@ -1,4 +1,5 @@
 export const TRAVEL_TYPES = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
+export const BASIC_TRAVEL_TYPE = 'flight';
 export const DateFormats = {
   DAY: 'DD',
   MONTH: 'MMM',
@@ -11,6 +12,18 @@ export const DateFormats = {
   MINUTES: 'mm[M]',
   BASIC: 'YYYY-MM-DDTHH:mm',
   DATEPICKER: 'd/m/y H:i',
+};
+export const DIfferenceUnits = {
+  MINUTE: 'minute',
+};
+export const TimeSigns = {
+  DAY: 'D',
+  HOUR: 'H',
+  MINUTE: 'M',
+};
+export const MinutesIn = {
+  DAY: 1440,
+  HOUR: 60
 };
 // export const CancelButtonNames = {
 //   DELETE: 'Delete',
