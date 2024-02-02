@@ -1,5 +1,6 @@
 import MainPresenter from './presenter/main-presenter';
 import FilterPresenter from './presenter/filter-presenter';
+import InfoPresenter from './presenter/info-presenter';
 import PointsModel from './model/points-model';
 import FilterModel from './model/filter-model';
 // import { mockPoints } from './mock/points';
@@ -7,7 +8,7 @@ import FilterModel from './model/filter-model';
 // import { mockDestinations } from './mock/destinations';
 import PointsApiService from './points-api-service';
 
-const AUTHORIZATION = 'Basic YWxleC5ydTkzMTFAZ21haWwuY29tOg==';
+const AUTHORIZATION = 'Basic QWxleFY6MTIzNDU=';
 const END_POINT = 'https://22.objects.htmlacademy.pro/big-trip';
 
 // const newButtonContainer = document.querySelector('.trip-main');
@@ -18,5 +19,6 @@ const filterModel = new FilterModel();
 pointsModel.init();
 const mainPresenter = new MainPresenter({ pointsModel, filterModel });
 const filterPresenter = new FilterPresenter({ pointsModel, filterModel });
+new InfoPresenter({pointsModel});
 mainPresenter.init();
 filterPresenter.init();

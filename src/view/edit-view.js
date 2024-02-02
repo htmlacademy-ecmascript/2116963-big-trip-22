@@ -146,14 +146,16 @@ function createEditTemplate(point, offers, destinations) {
               type="text"
               name="event-start-time"
               value=""
-              ${isDisabled ? 'disabled' : ''}>
+              ${isDisabled ? 'disabled' : ''}
+              required>
             &mdash;
             <label class="visually-hidden" for="event-end-time-${pointId}">To</label>
             <input class="event__input  event__input--time"
               id="event-end-time-${pointId}"
               type="text" name="event-end-time"
               value=""
-              ${isDisabled ? 'disabled' : ''}>
+              ${isDisabled ? 'disabled' : ''}
+              required>
           </div>
 
           <div class="event__field-group  event__field-group--price">
