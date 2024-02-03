@@ -5,8 +5,6 @@ import NewButtonView from '../view/new-button-view.js';
 
 export default class NewPointPresenter {
   #listComponent = null;
-  // #listContainer = null;
-  // #noPointsComponent = null;
   #pointsModel = null;
   #renderNoPoints = null;
 
@@ -18,8 +16,6 @@ export default class NewPointPresenter {
 
   constructor({ listComponent, pointsModel, handleViewAction, createPoint, renderNoPoints }) {
     this.#listComponent = listComponent;
-    // this.#listContainer = listContainer;
-    // this.#noPointsComponent = noPointsComponent;
     this.#pointsModel = pointsModel;
     this.#renderNoPoints = renderNoPoints;
     this.#handleViewAction = handleViewAction;
@@ -77,7 +73,6 @@ export default class NewPointPresenter {
         isDeleting: false,
       });
     };
-
     this.#editComponent.shake(resetFormState);
   }
 
@@ -87,18 +82,10 @@ export default class NewPointPresenter {
       UpdateType.MINOR,
       point,
     );
-    // this.destroy();
   };
 
   #handleDeleteClick = () => {
     this.destroy();
-  };
-
-  #onEscKeyDown = (evt) => {
-    if (evt.key === 'Escape' || evt.key === 'Esc') {
-      evt.preventDefault();
-      this.destroy();
-    }
   };
 
   #handleNewPointClose() {
@@ -108,5 +95,12 @@ export default class NewPointPresenter {
   #handleNewButtonClick = () => {
     this.#createPoint();
     this.#newButtonComponent.element.disabled = true;
+  };
+
+  #onEscKeyDown = (evt) => {
+    if (evt.key === 'Escape' && !this.#editComponent.isDisabled) {
+      evt.preventDefault();
+      this.destroy();
+    }
   };
 }

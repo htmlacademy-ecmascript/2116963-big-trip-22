@@ -25,10 +25,6 @@ export const MinutesIn = {
   DAY: 1440,
   HOUR: 60
 };
-// export const CancelButtonNames = {
-//   DELETE: 'Delete',
-//   CANCEL: 'Cancel'
-// };
 export const FilterType = {
   EVERYTHING: 'everything',
   FUTURE: 'future',

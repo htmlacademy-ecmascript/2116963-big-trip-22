@@ -1,5 +1,5 @@
-import { formatDate, getDatesDifference, getDatesDuration, getDifferenceTime } from '../utils/utils';
-import { DateFormats, DIfferenceUnits, MinutesIn, TimeSigns } from '../const';
+import { formatDate, getDifferenceTime } from '../utils/utils';
+import { DateFormats, TimeSigns } from '../const';
 import AbstractView from '../framework/view/abstract-view';
 
 function createOffersTemplate(pointOffers, checkedOffers) {
@@ -20,14 +20,6 @@ function createTimeUnitTemplate(time, sign) {
 }
 
 function createDifferenceTimeTemplate(dateFrom, dateTo) {
-  // const difference = getDatesDifference(dateFrom, dateTo);
-  // const duration = getDatesDuration(difference);
-  // const format = (differenceDuration.days() > 0 ? `${DateFormats.DAYS} ` : '')
-  //   + (differenceDuration.hours() > 0 ? `${DateFormats.HOURS} ` : '')
-  //   + DateFormats.MINUTES;
-  // const format = (differenceDuration.hours() > 0 ? `${DateFormats.HOURS} ` : '')
-  //   + DateFormats.MINUTES;
-  // return duration.format(format);
   const { days, hours, minutes } = getDifferenceTime(dateFrom, dateTo);
   const daysTemplate = createTimeUnitTemplate(days, TimeSigns.DAY);
   const hoursTemplate = createTimeUnitTemplate(hours, TimeSigns.HOUR);

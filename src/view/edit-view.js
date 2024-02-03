@@ -4,13 +4,9 @@ import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
-const newDateTo = new Date();
-
 const blankPoint = {
   id: 0,
   basePrice: 0,
-  // dateFrom: new Date(),
-  // dateTo: new Date(newDateTo.setMinutes(newDateTo.getMinutes() + 60)),
   dateFrom: '',
   dateTo: '',
   destination: '',
@@ -82,8 +78,6 @@ function createEditTemplate(point, offers, destinations) {
   const {
     id: pointId,
     basePrice,
-    // dateFrom,
-    // dateTo,
     destination,
     offers: checkedOffers,
     type,
@@ -210,6 +204,10 @@ export default class EditView extends AbstractStatefulView {
     return createEditTemplate(this._state, this.#offers, this.#destinations);
   }
 
+  get isDisabled() {
+    return this._state.isDisabled;
+  }
+
   removeElement() {
     super.removeElement();
 
@@ -243,6 +241,38 @@ export default class EditView extends AbstractStatefulView {
     }
     this.element.querySelector('.event__reset-btn').addEventListener('click', this.#onFormDeleteClick);
     this.#setDatepicker();
+  }
+
+  #setDatepicker() {
+    const commonConfig = {
+      dateFormat: DateFormats.DATEPICKER,
+      enableTime: true,
+      'time_24hr': true,
+      locale: {
+        firstDayOfWeek: 1
+      },
+      disableMobile: 'true'
+    };
+    const [dateFromElement, dateToElement] = this.element.querySelectorAll('.event__input--time');
+
+    this.#datepickerFrom = flatpickr(
+      dateFromElement,
+      {
+        ...commonConfig,
+        defaultDate: this._state.dateFrom,
+        onChange: this.#onDateFromChange,
+        maxDate: this._state.dateTo
+      },
+    );
+    this.#datepickerTo = flatpickr(
+      dateToElement,
+      {
+        ...commonConfig,
+        defaultDate: this._state.dateTo,
+        onChange: this.#onDateToChange,
+        minDate: this._state.dateFrom,
+      },
+    );
   }
 
   #onArrowClick = (evt) => {
@@ -302,40 +332,6 @@ export default class EditView extends AbstractStatefulView {
     this.#datepickerFrom.set('maxDate', formatDate(this._state.dateTo, DateFormats.DAY_TIME));
   };
 
-  #setDatepicker() {
-    const commonConfig = {
-      dateFormat: DateFormats.DATEPICKER,
-      enableTime: true,
-      'time_24hr': true,
-      locale: {
-        firstDayOfWeek: 1
-      },
-      disableMobile: 'true'
-    };
-    // const formattedDateFrom = formatDate(this._state.dateFrom, DateFormats.DAY_TIME);
-    // const formattedDateTo = formatDate(this._state.dateTo, DateFormats.DAY_TIME);
-    const [dateFromElement, dateToElement] = this.element.querySelectorAll('.event__input--time');
-
-    this.#datepickerFrom = flatpickr(
-      dateFromElement,
-      {
-        ...commonConfig,
-        defaultDate: this._state.dateFrom,
-        onChange: this.#onDateFromChange,
-        maxDate: this._state.dateTo
-      },
-    );
-    this.#datepickerTo = flatpickr(
-      dateToElement,
-      {
-        ...commonConfig,
-        defaultDate: this._state.dateTo,
-        onChange: this.#onDateToChange,
-        minDate: this._state.dateFrom,
-      },
-    );
-  }
-
   static parsePointToState(point) {
     return {
       ...point,
@@ -353,10 +349,6 @@ export default class EditView extends AbstractStatefulView {
     delete point.isDisabled;
     delete point.isSaving;
     delete point.isDeleting;
-    // point.dateFrom = formatDate(state.dateFrom, DateFormats.BASIC);
-    // point.dateTo = formatDate(state.dateTo, DateFormats.BASIC);
-    // point.dateFrom = new Date(state.dateFrom);
-    // point.dateTo = new Date(state.dateTo);
     return point;
   }
 }

@@ -19,6 +19,7 @@ export default class PointPresenter {
   #handleViewAction = null;
   #handleModeChange = null;
   #mode = Mode.DEFAULT;
+  #isEscBlocked = false;
 
   constructor({ listComponent, handleViewAction, handleModeChange }) {
     this.#listComponent = listComponent;
@@ -132,7 +133,7 @@ export default class PointPresenter {
   };
 
   #onEscKeyDown = (evt) => {
-    if (evt.key === 'Escape') {
+    if (evt.key === 'Escape' && !this.#editComponent.isDisabled) {
       evt.preventDefault();
       this.#replaceFormToPoint();
     }
@@ -155,11 +156,9 @@ export default class PointPresenter {
       isPatchUpdate ? UpdateType.PATCH : UpdateType.MINOR,
       update
     );
-    // this.#replaceFormToPoint();
   };
 
   #handleDeleteClick = (point) => {
-    document.removeEventListener('keydown', this.#onEscKeyDown);
     this.#handleViewAction(
       UserAction.DELETE_POINT,
       UpdateType.MINOR,

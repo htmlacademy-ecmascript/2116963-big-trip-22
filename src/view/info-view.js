@@ -4,19 +4,30 @@ import { DateFormats } from '../const';
 
 const ROUTE_LIMIT = 3;
 
+function getCitiesRoute(points, destinations) {
+  const citiesIds = points.map((point) => point.destination);
+  const cities = citiesIds.map((id) => destinations.find((item) => item.id === id).name);
+  const citiesRoute = [];
+  cities.forEach((city, index) => {
+    if (index === 0 || city !== cities[index - 1]) {
+      citiesRoute.push(city);
+    }
+  });
+  return citiesRoute;
+}
+
 function createRouteTemplate(points, destinations) {
-  const idRoute = points.map((point) => point.destination);
-  const cities = idRoute.map((id) => destinations.find((item) => item.id === id).name);
+  const citiesRoute = getCitiesRoute(points, destinations);
   let routeTemplate = '';
-  if (cities.length <= ROUTE_LIMIT) {
-    cities.forEach((city, index) => {
+  if (citiesRoute.length <= ROUTE_LIMIT) {
+    citiesRoute.forEach((city, index) => {
       routeTemplate += `${city}`;
-      if (index < cities.length - 1) {
+      if (index < citiesRoute.length - 1) {
         routeTemplate += ' &mdash; ';
       }
     });
   } else {
-    routeTemplate = `${cities[0]} &mdash;...&mdash; ${cities[cities.length - 1]}`;
+    routeTemplate = `${citiesRoute[0]} &mdash; ... &mdash; ${citiesRoute[citiesRoute.length - 1]}`;
   }
   return routeTemplate;
 }
@@ -24,11 +35,6 @@ function createRouteTemplate(points, destinations) {
 function createPeriodTemplate(points) {
   const dateStart = points[0].dateFrom;
   const dateFinish = points[points.length - 1].dateTo;
-  // if (dateStart === dateFinish || points.length === 1) {
-  //   return formatDate(dateFinish, DateFormats.DAY_MONTH);
-  // }
-  // const monthStart = formatDate(dateStart, DateFormats.MONTH);
-  // const monthFinish = formatDate(dateFinish, DateFormats.MONTH);
   const start = formatDate(dateStart, DateFormats.DAY_MONTH);
   const finish = formatDate(dateFinish, DateFormats.DAY_MONTH);
   if (start === finish) {
@@ -50,8 +56,6 @@ function getSumPrice(points, offers) {
 }
 
 function createInfoTemplate(points, offers, destinations) {
-  // const period = getPeriodDates(points);
-
   return (
     `<section class="trip-main__trip-info  trip-info">
       <div class="trip-info__main">

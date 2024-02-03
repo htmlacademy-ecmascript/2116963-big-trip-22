@@ -37,8 +37,6 @@ export default class PointsModel extends Observable {
   }
 
   get points() {
-    //////!
-    // return [];
     return this.#points;
   }
 
