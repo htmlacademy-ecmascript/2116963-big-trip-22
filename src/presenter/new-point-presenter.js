@@ -59,6 +59,7 @@ export default class NewPointPresenter {
   }
 
   setSaving() {
+    document.removeEventListener('keydown', this.#onEscKeyDown);
     this.#editComponent.updateElement({
       isDisabled: true,
       isSaving: true,
@@ -66,14 +67,21 @@ export default class NewPointPresenter {
   }
 
   setAborting() {
+    document.addEventListener('keydown', this.#onEscKeyDown);
     const resetFormState = () => {
-      this.#editComponent.updateElement({
-        isDisabled: false,
-        isSaving: false,
-        isDeleting: false,
-      });
+      if (this.#editComponent) {
+        this.#editComponent.updateElement({
+          isDisabled: false,
+          isSaving: false,
+          isDeleting: false,
+        });
+      }
     };
-    this.#editComponent.shake(resetFormState);
+    try {
+      this.#editComponent.shake(resetFormState);
+    } catch(err) {
+      new Error('Can\'t shake');
+    }
   }
 
   #handleFormSubmit = (point) => {
@@ -98,7 +106,7 @@ export default class NewPointPresenter {
   };
 
   #onEscKeyDown = (evt) => {
-    if (evt.key === 'Escape' && !this.#editComponent.isDisabled) {
+    if (evt.key === 'Escape') {
       evt.preventDefault();
       this.destroy();
     }

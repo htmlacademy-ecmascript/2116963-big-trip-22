@@ -166,7 +166,7 @@ function createEditTemplate(point, offers, destinations) {
           </div>
 
           <button class="event__save-btn  btn  btn--blue" type="submit" ${isDisabled ? 'disabled' : ''}>${isSaving ? 'Saving...' : 'Save'}</button>
-          <button class="event__reset-btn" type="reset">${defineCancelButtonName()}</button>
+          <button class="event__reset-btn" type="reset"${pointId !== 0 && isDisabled ? 'disabled' : ''}>${defineCancelButtonName()}</button>
           ${pointId !== 0 ? `<button class="event__rollup-btn" type="button">
             <span class="visually-hidden">Open event</span>
           </button>` : ''}

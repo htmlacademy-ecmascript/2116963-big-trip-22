@@ -1,7 +1,6 @@
 import dayjs from 'dayjs';
 import { MinutesIn, DIfferenceUnits } from '../const';
 
-
 export function getRandomArrayElement(items) {
   return items[Math.floor(Math.random() * items.length)];
 }

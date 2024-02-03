@@ -46,7 +46,7 @@ export default class FilterPresenter {
   }
 
   #handleModelEvent = (updateType) => {
-    if (updateType === UpdateType.INIT && this.#pointsModel.isFailedToLoad || (updateType === UpdateType.PATCH)) {
+    if (updateType === UpdateType.PATCH || this.#pointsModel.isFailedToLoad) {
       return;
     }
     this.init();

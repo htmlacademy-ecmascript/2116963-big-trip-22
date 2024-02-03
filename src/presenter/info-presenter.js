@@ -1,6 +1,5 @@
 import { render, replace, remove, RenderPosition } from '../framework/render.js';
 import InfoView from '../view/info-view.js';
-import { UpdateType } from '../const.js';
 
 export default class InfoPresenter {
   #infoContainer = document.querySelector('.trip-main');
@@ -31,8 +30,8 @@ export default class InfoPresenter {
     remove(prevInfoComponent);
   }
 
-  #handleModelEvent = (updateType) => {
-    if (updateType === UpdateType.INIT && this.#pointsModel.isFailedToLoad) {
+  #handleModelEvent = () => {
+    if (this.#pointsModel.isFailedToLoad) {
       return;
     }
     this.init();

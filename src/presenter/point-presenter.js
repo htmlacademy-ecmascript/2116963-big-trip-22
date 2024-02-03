@@ -19,7 +19,6 @@ export default class PointPresenter {
   #handleViewAction = null;
   #handleModeChange = null;
   #mode = Mode.DEFAULT;
-  #isEscBlocked = false;
 
   constructor({ listComponent, handleViewAction, handleModeChange }) {
     this.#listComponent = listComponent;
@@ -47,7 +46,7 @@ export default class PointPresenter {
       point: this.#point,
       offers: this.#offers,
       destinations: this.#destinations,
-      handleArrowClick:  this.#replaceFormToPoint,
+      handleArrowClick: this.#replaceFormToPoint,
       handleFormSubmit: this.#handleFormSubmit,
       handleDeleteClick: this.#handleDeleteClick,
     });
@@ -86,6 +85,7 @@ export default class PointPresenter {
   }
 
   setSaving() {
+    document.removeEventListener('keydown', this.#onEscKeyDown);
     if (this.#mode === Mode.EDITING) {
       this.#editComponent.updateElement({
         isDisabled: true,
@@ -95,6 +95,7 @@ export default class PointPresenter {
   }
 
   setDeleting() {
+    document.removeEventListener('keydown', this.#onEscKeyDown);
     if (this.#mode === Mode.EDITING) {
       this.#editComponent.updateElement({
         isDisabled: true,
@@ -108,12 +109,15 @@ export default class PointPresenter {
       this.#pointComponent.shake();
       return;
     }
+    document.addEventListener('keydown', this.#onEscKeyDown);
     const resetFormState = () => {
-      this.#editComponent.updateElement({
-        isDisabled: false,
-        isSaving: false,
-        isDeleting: false,
-      });
+      if (this.#editComponent.isDisabled) {
+        this.#editComponent.updateElement({
+          isDisabled: false,
+          isSaving: false,
+          isDeleting: false,
+        });
+      }
     };
     this.#editComponent.shake(resetFormState);
   }
@@ -133,7 +137,7 @@ export default class PointPresenter {
   };
 
   #onEscKeyDown = (evt) => {
-    if (evt.key === 'Escape' && !this.#editComponent.isDisabled) {
+    if (evt.key === 'Escape') {
       evt.preventDefault();
       this.#replaceFormToPoint();
     }
@@ -149,8 +153,8 @@ export default class PointPresenter {
 
   #handleFormSubmit = (update) => {
     const isPatchUpdate = isDatesEqual(this.#point.dateFrom, update.dateFrom)
-     && isDatesEqual(this.#point.dateTo, update.dateTo)
-     && this.#point.basePrice === update.basePrice;
+      && isDatesEqual(this.#point.dateTo, update.dateTo)
+      && this.#point.basePrice === update.basePrice;
     this.#handleViewAction(
       UserAction.UPDATE_POINT,
       isPatchUpdate ? UpdateType.PATCH : UpdateType.MINOR,
