@@ -162,7 +162,8 @@ function createEditTemplate(point, offers, destinations) {
               type="number" min="1" step="1"
               name="event-price"
               value="${basePrice}"
-              ${isDisabled ? 'disabled' : ''}>
+              ${isDisabled ? 'disabled' : ''}
+              required>
           </div>
 
           <button class="event__save-btn  btn  btn--blue" type="submit" ${isDisabled ? 'disabled' : ''}>${isSaving ? 'Saving...' : 'Save'}</button>

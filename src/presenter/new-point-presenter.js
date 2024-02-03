@@ -77,11 +77,7 @@ export default class NewPointPresenter {
         });
       }
     };
-    try {
-      this.#editComponent.shake(resetFormState);
-    } catch(err) {
-      new Error('Can\'t shake');
-    }
+    this.#editComponent.shake(resetFormState);
   }
 
   #handleFormSubmit = (point) => {
