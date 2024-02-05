@@ -1,5 +1,5 @@
-import { formatDate, getDatesDifference, getDatesDuration } from '../utils/utils';
-import { DateFormats } from '../const';
+import { formatDate, getDifferenceTime } from '../utils/utils';
+import { DateFormats, TimeSigns } from '../const';
 import AbstractView from '../framework/view/abstract-view';
 
 function createOffersTemplate(pointOffers, checkedOffers) {
@@ -14,13 +14,23 @@ function createOffersTemplate(pointOffers, checkedOffers) {
     .join('');
 }
 
+function createTimeUnitTemplate(time, sign) {
+  const zeroTime = time < 10 ? `0${time}` : time.toString();
+  return `${zeroTime + sign} `;
+}
+
 function createDifferenceTimeTemplate(dateFrom, dateTo) {
-  const difference = getDatesDifference(dateFrom, dateTo);
-  const differenceDuration = getDatesDuration(difference);
-  const format = (differenceDuration.days() > 0 ? `${DateFormats.DAYS} ` : '')
-    + (differenceDuration.hours() > 0 ? `${DateFormats.HOURS} ` : '')
-    + DateFormats.MINUTES;
-  return differenceDuration.format(format);
+  const { days, hours, minutes } = getDifferenceTime(dateFrom, dateTo);
+  const daysTemplate = createTimeUnitTemplate(days, TimeSigns.DAY);
+  const hoursTemplate = createTimeUnitTemplate(hours, TimeSigns.HOUR);
+  const minutesTemplate = createTimeUnitTemplate(minutes, TimeSigns.MINUTE);
+  if (days > 0) {
+    return daysTemplate + hoursTemplate + minutesTemplate;
+  } else if (hours > 0) {
+    return hoursTemplate + minutesTemplate;
+  } else {
+    return minutesTemplate;
+  }
 }
 
 function createPointTemplate(point, offers, destinations) {

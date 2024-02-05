@@ -9,7 +9,7 @@ export default class FilterPresenter {
   #pointsModel = null;
   #filterComponent = null;
 
-  constructor({pointsModel, filterModel}) {
+  constructor({ pointsModel, filterModel }) {
     this.#filterModel = filterModel;
     this.#pointsModel = pointsModel;
 
@@ -45,7 +45,10 @@ export default class FilterPresenter {
     remove(prevFilterComponent);
   }
 
-  #handleModelEvent = () => {
+  #handleModelEvent = (updateType) => {
+    if (updateType === UpdateType.PATCH || this.#pointsModel.isFailedToLoad) {
+      return;
+    }
     this.init();
   };
 

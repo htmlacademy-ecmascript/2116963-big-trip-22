@@ -1,10 +1,12 @@
 import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
-
-dayjs.extend(duration);
+import { MinutesIn, DIfferenceUnits } from '../const';
 
 export function getRandomArrayElement(items) {
   return items[Math.floor(Math.random() * items.length)];
+}
+
+export function sumNumbers(numbers) {
+  return numbers.reduce((accumulator, currentValue) => accumulator + currentValue);
 }
 
 export function formatDate(date, template) {
@@ -12,12 +14,17 @@ export function formatDate(date, template) {
     return dayjs(date).format(template);
   }
 }
+
 export function getDatesDifference(dateFrom, dateTo) {
   return dayjs(dateTo).diff(dayjs(dateFrom));
 }
 
-export function getDatesDuration(difference) {
-  return dayjs.duration(difference);
+export function getDifferenceTime(dateFrom, dateTo) {
+  const difference = dayjs(dateTo).diff(dayjs(dateFrom), DIfferenceUnits.MINUTE);
+  const days = Math.floor(difference / MinutesIn.DAY);
+  const hours = Math.floor((difference % MinutesIn.DAY) / MinutesIn.HOUR);
+  const minutes = Math.floor(difference % MinutesIn.HOUR);
+  return {days, hours, minutes};
 }
 
 export function isDatesEqual(dateA, dateB) {

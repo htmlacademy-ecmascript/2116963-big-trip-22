@@ -1,4 +1,5 @@
 export const TRAVEL_TYPES = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
+export const BASIC_TRAVEL_TYPE = 'flight';
 export const DateFormats = {
   DAY: 'DD',
   MONTH: 'MMM',
@@ -12,9 +13,17 @@ export const DateFormats = {
   BASIC: 'YYYY-MM-DDTHH:mm',
   DATEPICKER: 'd/m/y H:i',
 };
-export const CancelButtonNames = {
-  DELETE: 'Delete',
-  CANCEL: 'Cancel'
+export const DIfferenceUnits = {
+  MINUTE: 'minute',
+};
+export const TimeSigns = {
+  DAY: 'D',
+  HOUR: 'H',
+  MINUTE: 'M',
+};
+export const MinutesIn = {
+  DAY: 1440,
+  HOUR: 60
 };
 export const FilterType = {
   EVERYTHING: 'everything',
@@ -39,4 +48,9 @@ export const UpdateType = {
   PATCH: 'PATCH',
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
+  INIT: 'INIT',
+};
+export const UiBlockTimeLimit = {
+  LOWER_LIMIT: 350,
+  UPPER_LIMIT: 1000,
 };

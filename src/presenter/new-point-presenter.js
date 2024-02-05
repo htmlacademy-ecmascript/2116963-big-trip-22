@@ -1,25 +1,28 @@
-import { remove, render, RenderPosition } from '../framework/render.js';
+import { remove, render, RenderPosition, replace } from '../framework/render.js';
 import EditView from '../view/edit-view.js';
-import { nanoid } from 'nanoid';
 import { UserAction, UpdateType } from '../const.js';
 import NewButtonView from '../view/new-button-view.js';
 
 export default class NewPointPresenter {
   #listComponent = null;
+  #pointsModel = null;
+  #renderNoPoints = null;
+
   #handleViewAction = null;
   #createPoint = null;
   #editComponent = null;
   #newButtonContainer = document.querySelector('.trip-main');
   #newButtonComponent = null;
 
-  constructor({ listComponent, handleViewAction, createPoint }) {
+  constructor({ listComponent, pointsModel, handleViewAction, createPoint, renderNoPoints }) {
     this.#listComponent = listComponent;
+    this.#pointsModel = pointsModel;
+    this.#renderNoPoints = renderNoPoints;
     this.#handleViewAction = handleViewAction;
     this.#createPoint = createPoint;
     this.#newButtonComponent = new NewButtonView({
       handleNewButtonClick: this.#handleNewButtonClick,
     });
-    render(this.#newButtonComponent, this.#newButtonContainer);
   }
 
   init(offers, destinations) {
@@ -30,9 +33,16 @@ export default class NewPointPresenter {
         handleFormSubmit: this.#handleFormSubmit,
         handleDeleteClick: this.#handleDeleteClick
       });
+      if (this.#listComponent === null) {
+        replace();
+      }
       render(this.#editComponent, this.#listComponent.element, RenderPosition.AFTERBEGIN);
       document.addEventListener('keydown', this.#onEscKeyDown);
     }
+  }
+
+  renderNewButton() {
+    render(this.#newButtonComponent, this.#newButtonContainer);
   }
 
   destroy() {
@@ -43,26 +53,43 @@ export default class NewPointPresenter {
     remove(this.#editComponent);
     this.#editComponent = null;
     document.removeEventListener('keydown', this.#onEscKeyDown);
+    if (!this.#pointsModel.points.length) {
+      this.#renderNoPoints();
+    }
+  }
+
+  setSaving() {
+    document.removeEventListener('keydown', this.#onEscKeyDown);
+    this.#editComponent.updateElement({
+      isDisabled: true,
+      isSaving: true,
+    });
+  }
+
+  setAborting() {
+    document.addEventListener('keydown', this.#onEscKeyDown);
+    const resetFormState = () => {
+      if (this.#editComponent) {
+        this.#editComponent.updateElement({
+          isDisabled: false,
+          isSaving: false,
+          isDeleting: false,
+        });
+      }
+    };
+    this.#editComponent.shake(resetFormState);
   }
 
   #handleFormSubmit = (point) => {
     this.#handleViewAction(
       UserAction.ADD_POINT,
       UpdateType.MINOR,
-      { ...point, id: nanoid() },
+      point,
     );
-    this.destroy();
   };
 
   #handleDeleteClick = () => {
     this.destroy();
-  };
-
-  #onEscKeyDown = (evt) => {
-    if (evt.key === 'Escape' || evt.key === 'Esc') {
-      evt.preventDefault();
-      this.destroy();
-    }
   };
 
   #handleNewPointClose() {
@@ -72,5 +99,12 @@ export default class NewPointPresenter {
   #handleNewButtonClick = () => {
     this.#createPoint();
     this.#newButtonComponent.element.disabled = true;
+  };
+
+  #onEscKeyDown = (evt) => {
+    if (evt.key === 'Escape') {
+      evt.preventDefault();
+      this.destroy();
+    }
   };
 }

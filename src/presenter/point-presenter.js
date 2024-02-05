@@ -46,7 +46,7 @@ export default class PointPresenter {
       point: this.#point,
       offers: this.#offers,
       destinations: this.#destinations,
-      handleArrowClick:  this.#replaceFormToPoint,
+      handleArrowClick: this.#replaceFormToPoint,
       handleFormSubmit: this.#handleFormSubmit,
       handleDeleteClick: this.#handleDeleteClick,
     });
@@ -59,7 +59,8 @@ export default class PointPresenter {
     if (this.#mode === Mode.DEFAULT) {
       replace(this.#pointComponent, prevPointComponent);
     } else if (this.#mode === Mode.EDITING) {
-      replace(this.#editComponent, prevEditComponent);
+      replace(this.#pointComponent, prevEditComponent);
+      this.#mode = Mode.DEFAULT;
     }
 
     remove(prevPointComponent);
@@ -81,6 +82,44 @@ export default class PointPresenter {
     if (this.#mode === Mode.EDITING) {
       this.#replaceFormToPoint();
     }
+  }
+
+  setSaving() {
+    document.removeEventListener('keydown', this.#onEscKeyDown);
+    if (this.#mode === Mode.EDITING) {
+      this.#editComponent.updateElement({
+        isDisabled: true,
+        isSaving: true,
+      });
+    }
+  }
+
+  setDeleting() {
+    document.removeEventListener('keydown', this.#onEscKeyDown);
+    if (this.#mode === Mode.EDITING) {
+      this.#editComponent.updateElement({
+        isDisabled: true,
+        isDeleting: true,
+      });
+    }
+  }
+
+  setAborting() {
+    if (this.#mode === Mode.DEFAULT) {
+      this.#pointComponent.shake();
+      return;
+    }
+    document.addEventListener('keydown', this.#onEscKeyDown);
+    const resetFormState = () => {
+      if (this.#editComponent.isDisabled) {
+        this.#editComponent.updateElement({
+          isDisabled: false,
+          isSaving: false,
+          isDeleting: false,
+        });
+      }
+    };
+    this.#editComponent.shake(resetFormState);
   }
 
   #replacePointToForm = () => {
@@ -114,18 +153,16 @@ export default class PointPresenter {
 
   #handleFormSubmit = (update) => {
     const isPatchUpdate = isDatesEqual(this.#point.dateFrom, update.dateFrom)
-     && isDatesEqual(this.#point.dateTo, update.dateTo)
-     && this.#point.basePrice === update.basePrice;
+      && isDatesEqual(this.#point.dateTo, update.dateTo)
+      && this.#point.basePrice === update.basePrice;
     this.#handleViewAction(
       UserAction.UPDATE_POINT,
       isPatchUpdate ? UpdateType.PATCH : UpdateType.MINOR,
       update
     );
-    this.#replaceFormToPoint();
   };
 
   #handleDeleteClick = (point) => {
-    document.removeEventListener('keydown', this.#onEscKeyDown);
     this.#handleViewAction(
       UserAction.DELETE_POINT,
       UpdateType.MINOR,

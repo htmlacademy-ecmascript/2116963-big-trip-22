@@ -13,7 +13,7 @@ function createListTemplate(filterType) {
   return `<p class="trip-events__msg">${noPointsTextValue}</p>`;
 }
 
-export default class EmptyView extends AbstractView {
+export default class NoPointsView extends AbstractView {
   #filterType = null;
 
   constructor({filterType}) {
