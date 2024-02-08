@@ -65,16 +65,16 @@ export default class UiBlocker {
   /** Метод, добавляющий CSS-класс и обработчик */
   #activateBlocking = () => {
     this.#element.classList.add('ui-blocker--on');
-    document.addEventListener('keydown', this.#documentKeydownHandler);
+    document.addEventListener('keydown', this.#onDocumentKeydown);
   };
 
   /** Метод, убирающий CSS-класс и обработчик */
   #disactivateBlocking = () => {
     this.#element.classList.remove('ui-blocker--on');
-    document.removeEventListener('keydown', this.#documentKeydownHandler);
+    document.removeEventListener('keydown', this.#onDocumentKeydown);
   };
 
-  #documentKeydownHandler = (evt) => {
+  #onDocumentKeydown = (evt) => {
     evt.preventDefault();
   };
 }
