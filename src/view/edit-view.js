@@ -92,9 +92,8 @@ function createEditTemplate(point, offers, destinations) {
       return 'Cancel';
     } else if (isDeleting) {
       return 'Deleting...';
-    } else {
-      return 'Delete';
     }
+    return 'Delete';
   }
 
   return (

@@ -13,7 +13,7 @@ export const DateFormats = {
   BASIC: 'YYYY-MM-DDTHH:mm',
   DATEPICKER: 'd/m/y H:i',
 };
-export const DIfferenceUnits = {
+export const DifferenceUnits = {
   MINUTE: 'minute',
 };
 export const TimeSigns = {

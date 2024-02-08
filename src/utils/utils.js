@@ -1,9 +1,5 @@
 import dayjs from 'dayjs';
-import { MinutesIn, DIfferenceUnits } from '../const';
-
-export function getRandomArrayElement(items) {
-  return items[Math.floor(Math.random() * items.length)];
-}
+import { MinutesIn, DifferenceUnits } from '../const';
 
 export function sumNumbers(numbers) {
   return numbers.reduce((accumulator, currentValue) => accumulator + currentValue);
@@ -20,7 +16,7 @@ export function getDatesDifference(dateFrom, dateTo) {
 }
 
 export function getDifferenceTime(dateFrom, dateTo) {
-  const difference = dayjs(dateTo).diff(dayjs(dateFrom), DIfferenceUnits.MINUTE);
+  const difference = dayjs(dateTo).diff(dayjs(dateFrom), DifferenceUnits.MINUTE);
   const days = Math.floor(difference / MinutesIn.DAY);
   const hours = Math.floor((difference % MinutesIn.DAY) / MinutesIn.HOUR);
   const minutes = Math.floor(difference % MinutesIn.HOUR);

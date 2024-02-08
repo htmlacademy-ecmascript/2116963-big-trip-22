@@ -28,9 +28,8 @@ function createDifferenceTimeTemplate(dateFrom, dateTo) {
     return daysTemplate + hoursTemplate + minutesTemplate;
   } else if (hours > 0) {
     return hoursTemplate + minutesTemplate;
-  } else {
-    return minutesTemplate;
   }
+  return minutesTemplate;
 }
 
 function createPointTemplate(point, offers, destinations) {
@@ -77,7 +76,7 @@ function createPointTemplate(point, offers, destinations) {
 }
 
 export default class PointView extends AbstractView {
-  #point = [];
+  #point = null;
   #offers = [];
   #destinations = [];
   #handleArrowClick = null;
